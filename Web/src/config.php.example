@@ -1,0 +1,22 @@
+<?php
+// Configurations are stored in an array.
+    $config = array();
+
+    // Used for pathing (and development)
+    $config['sitepath']         = "http://randomit.localhost/"; 
+
+    // Logo path, leave default for default logo
+    $config['logopath']         = "/src/img/logo.png";
+
+    // Database configuration settings for MySQL instance
+        $config['mysql']['hostname']  = "";
+        $config['mysql']['username']  = "";
+        $config['mysql']['password']  = "";
+        $config['mysql']['database']  = "";
+        $config['mysql']['port']      = "";
+    
+    // Site customisation
+    $config['sitetile'] = "RandomIT development site";
+    $config['siteslogan'] = "Where development is made";
+
+?>

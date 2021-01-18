@@ -1,0 +1,18 @@
+## Web ingores
+# Pls upload no config
+web/src/config.php
+
+# Package Files #
+web/src/logs/*.log
+web/src/logs/filtered/*.log
+
+# Package Files #
+*.zip
+*.tar.gz
+*.rar
+
+# Log files
+*.log
+
+# Dont upload the composer stuff #
+/web/vendor/
