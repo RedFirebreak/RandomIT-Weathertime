@@ -1,37 +1,51 @@
 import java.io.File;
+import java.util.HashMap;
 import javax.xml.parsers.DocumentBuilderFactory;  
-import javax.xml.parsers.DocumentBuilder;  
 import org.w3c.dom.Document;  
-import org.w3c.dom.NodeList;  
-import org.w3c.dom.Node;  
-import org.w3c.dom.Element;  
 
 public class XML {
 
+    public static final double MAXTEMPERATURE = 10.0;
+
     public static void main(String args[]) {
         try {
-            File file = new File("Java-files/probeersel.XML");
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();  
-            
-            DocumentBuilder db = dbf.newDocumentBuilder();  
-            Document doc = db.parse(file);  
-            doc.getDocumentElement().normalize();  
-            System.out.println("Root element: " + doc.getDocumentElement().getNodeName());  
+            //Load the file
+            File file = new File("Java-files/output.XML");
 
-            NodeList nodeList = doc.getElementsByTagName("student");  
-            
-            for (int i = 0; i < nodeList.getLength(); i++) {  
-                Node node = nodeList.item(i);  
-                System.out.println("\nNode Name :" + node.getNodeName());  
-                if (node.getNodeType() == Node.ELEMENT_NODE) {  
-                    Element eElement = (Element) node;  
-                    System.out.println("Student id: "+ eElement.getElementsByTagName("id").item(0).getTextContent());  
-                    System.out.println("First Name: "+ eElement.getElementsByTagName("firstname").item(0).getTextContent());  
-                    System.out.println("Last Name: "+ eElement.getElementsByTagName("lastname").item(0).getTextContent());  
-                    System.out.println("Subject: "+ eElement.getElementsByTagName("subject").item(0).getTextContent());  
-                    System.out.println("Marks: "+ eElement.getElementsByTagName("marks").item(0).getTextContent());  
-                }  
-            }  
+            //Open the XML-file
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
+
+            //Normalizing the document helps generate correct results
+            doc.getDocumentElement().normalize();
+
+            //Get temperature from XML-file
+            double temperature = Double.parseDouble(doc.getElementsByTagName("TEMP").item(0).getTextContent());
+
+            //Temporary hashmap until we know what to do with data
+            HashMap<String, String> returnHash = new HashMap<String, String>();
+
+            // if statement needs to be bigger and better, TBA
+            if(temperature >= MAXTEMPERATURE) { 
+                System.out.println("DEBUG De temperatuur hoog genoeg, namelijk: " + temperature + "°C.");
+
+                //Add keys and values
+                returnHash.put("StationNumber", doc.getElementsByTagName("STN").item(0).getTextContent());
+                returnHash.put("Date", doc.getElementsByTagName("STN").item(0).getTextContent());
+                returnHash.put("Time", doc.getElementsByTagName("TIME").item(0).getTextContent());
+                returnHash.put("Temperature", doc.getElementsByTagName("TEMP").item(0).getTextContent());
+                returnHash.put("DewPoint", doc.getElementsByTagName("DEWP").item(0).getTextContent());
+                returnHash.put("StationLevelPressure", doc.getElementsByTagName("STP").item(0).getTextContent());
+                returnHash.put("SeaLevelPressure", doc.getElementsByTagName("SLP").item(0).getTextContent());
+                returnHash.put("Visibility", doc.getElementsByTagName("VISIB").item(0).getTextContent());
+                returnHash.put("Windspeed", doc.getElementsByTagName("WDSP").item(0).getTextContent());
+                returnHash.put("Percipitation", doc.getElementsByTagName("PRCP").item(0).getTextContent());
+                returnHash.put("SnowDrop", doc.getElementsByTagName("SNDP").item(0).getTextContent());
+                returnHash.put("Events", doc.getElementsByTagName("FRSHTT").item(0).getTextContent()); // is in binary, may need to unpack
+                returnHash.put("CloudCoverage", doc.getElementsByTagName("CLDC").item(0).getTextContent());
+                returnHash.put("WindDirection", doc.getElementsByTagName("WNDDIR").item(0).getTextContent());                
+            } else {
+                System.out.println("DEBUG De temperatuur is te laag, namelijk: " + temperature + "°C."); 
+            }
         } catch (Exception e) {  
             e.printStackTrace();  
         } 
