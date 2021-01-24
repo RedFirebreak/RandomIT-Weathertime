@@ -1,41 +1,33 @@
-// A Java program for a Server
-import java.net.*;
 import java.io.*;
+import java.net.*;
 
 public class Server
 {
     //initialize socket and input stream
-    public Socket socket = null;
-    public ServerSocket server = null;
-    public int counter = 1;
+    private Socket socket = null;
+    private ServerSocket server = null;
 
     // constructor with port
     public Server(int port)
     {
+      try
+      {
         // starts server and waits for a connection
-        try
-        {
-            server = new ServerSocket(port);
-            System.out.println("Server started");
+        server = new ServerSocket(port);
 
-            System.out.println("Waiting for a client ...");
-            while(true)
-            {
-              socket = server.accept();
-              System.out.println("Client accepted");
-
-              //thread
-              new ServerThread(socket).start();
-              System.out.println("thread: " + counter++);
-            }
-				}
-        catch(IOException i)
+        while(true)
         {
+          socket = server.accept();
+          new ServerThread(socket).start();
         }
+  		}
+      catch(IOException | NullPointerException i)
+      {
+      }
     }
 
     public static void main(String args[])
     {
-        Server server = new Server(7789);
+      Server server = new Server(7789);
     }
 }
