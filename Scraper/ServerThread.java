@@ -19,27 +19,24 @@ public class ServerThread extends Thread
         this.socket = socket;
     }
 
-    public void run()
-    {
-        try
-        {
+    public void run() {
+        try {
             // takes input from the client socket
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             String line = "";
 
-            while(true)
-            {
-                line = in.readLine();
-                textOutput += (line + "\n");
-                if(line.equals("</WEATHERDATA>")) {
-                    System.out.println(textOutput);
-                    textOutput = "";
+            while(true) {
+                    line = in.readLine();
+                    textOutput += (line + "\n");
+                    if(line.equals("</WEATHERDATA>")) {
+                        System.out.println(textOutput);
+                        textOutput = "";
                 }
             }
         }
-        catch(IOException i)
-        {
+         catch(IOException | NullPointerException i) {
+             System.out.println(i);
         }
     }
 }
