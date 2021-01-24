@@ -1,4 +1,9 @@
 // A Java program for a Server
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 public class Server {
     //initialize socket and input stream
     public Socket socket = null;
