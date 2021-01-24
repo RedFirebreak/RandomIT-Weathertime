@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 public class ServerThread extends Thread
 {
@@ -25,7 +26,11 @@ public class ServerThread extends Thread
           line = in.readLine();
           out += (line + "\n");
           if(line.equals("</WEATHERDATA>")) {
-            System.out.println(out);
+            Server.xml.add(out);
+            //String xml = Server.xml.get(0);
+            //System.out.println(xml);
+            int count = Server.xml.size();
+            System.out.println("aantal XML bestanden: " + count);
             out = "";
           }
         }

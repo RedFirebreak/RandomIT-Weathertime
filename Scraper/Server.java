@@ -1,11 +1,13 @@
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 public class Server
 {
     //initialize socket and input stream
     private Socket socket = null;
     private ServerSocket server = null;
+    public static Stack<String> xml = new Stack<String>();
 
     // constructor with port
     public Server(int port)
