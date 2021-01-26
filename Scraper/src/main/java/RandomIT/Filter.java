@@ -151,7 +151,7 @@ class Filter implements Runnable {
       /* Infinite loop */
       while(true) {
          if (Run.validinput.isEmpty()) {
-            // Do nothing
+            // Do nothing        
          } else {
 
                // Client 1 : University of Theran
