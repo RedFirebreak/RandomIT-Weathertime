@@ -1,10 +1,13 @@
 package RandomIT;
-import java.util.*;
+import java.util.Queue;
+import java.util.HashMap;
+import java.util.LinkedList;
+
 
 public class Run {
-    public static final Queue<String> rawinput        = new LinkedList<String>();
-    public static final Queue<HashMap> validinput     = new LinkedList<HashMap>();
-    public static final Queue<HashMap> filteredinput  = new LinkedList<HashMap>();
+    public static final Queue<String> rawinput = new LinkedList<String>();
+    public static final Queue<HashMap<String, String>> validinput = new LinkedList<HashMap<String, String>>();
+    public static final Queue<HashMap<String, String>> filteredinput = new LinkedList<HashMap<String, String>>();
 
     public static void main( String[] args ) throws InterruptedException {
 
@@ -21,7 +24,7 @@ public class Run {
         /** Filter thread */
         System.out.println( "[LOG] Starting filter thread" );
         Filter filter = new Filter("Filter 1");
-
+        
 
         /** Store thread */
         System.out.println( "[LOG] Starting datastorage thread" );
