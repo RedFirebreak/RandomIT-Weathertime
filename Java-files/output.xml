@@ -4,7 +4,7 @@
 	<!-- Het measurement-element bevat de meetgegevens van een weerstation -->
 	<MEASUREMENT>
 		<!-- Het station waarvan deze gegevens zijn -->
-		<STN>123456</STN>
+		<STN>37760</STN>
 		
 		<!-- Datum van versturen van deze gegevens, formaat: yyyy-mm-dd -->
 		<DATE>2009-09-13</DATE>
@@ -13,7 +13,7 @@
 		<TIME>15:59:46</TIME>
 		
 		<!-- Temperatuur in graden Celsius, geldige waardes van -9999.9 t/m 9999.9 met 1 decimaal -->
-		<TEMP>-60.1</TEMP>
+		<TEMP>987.5</TEMP>
 		
 		<!-- Dauwpunt in graden Celsius, geldige waardes van -9999.9 t/m 9999.9 met 1 decimaal -->
 		<DEWP>-58.1</DEWP>
