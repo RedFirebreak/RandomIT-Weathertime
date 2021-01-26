@@ -39,13 +39,9 @@ public class Run {
         datastorage.start();
 
         while(true){
-          Thread.sleep(1000);
-          if(rawinput.size() == 0){
-          }
-          else{
-            System.out.println(rawinput.peek());
-            System.out.println(rawinput.size());
-          }
+          System.out.println("RAWINPUT SIZE: " + rawinput.size());
+          //System.out.println("VALIDINPUT SIZE: " + validinput.size());
+          //System.out.println("FILTEREDINPUT SIZE: " + filteredinput.size());
         }
     }
 }

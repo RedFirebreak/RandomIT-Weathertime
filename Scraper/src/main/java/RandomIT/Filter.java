@@ -12,13 +12,13 @@ class Filter implements Runnable {
    // Runs the thread, insert code here to be run
    public void run() {
       System.out.println("[FILTER] Running " +  threadName );
-      int i = 0;
       /* Infinite loop */
-      while(i < 25) {
-         System.out.println( "[FILTER] RunAmount: " + i );
-         i = i + 1;
+      while(true) {
+         int queueAmount = Run.validinput.size();
+         if (queueAmount > 0) {
+            Run.filteredinput.add(Run.validinput.poll());
+         }
       }
-      System.out.println("[FILTER] Thread " +  threadName + " exiting.");
    }
 
    // Starts the thread

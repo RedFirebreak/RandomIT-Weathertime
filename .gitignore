@@ -17,5 +17,13 @@ web/src/logs/filtered/*.log
 # Log files
 *.log
 
+# fuck these ever loving fucking class files
+*.class
+.classpath
+.project
+Scraper/target/
+
+
 # Dont upload the composer stuff #
 /web/vendor/
+Scraper/.settings/
