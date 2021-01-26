@@ -26,16 +26,6 @@ public class Run {
         System.out.println( "[LOG] Starting filter thread" );
         Filter filter = new Filter("Filter 1");
 
-
-        /** Parser thread */
-        System.out.println( "[LOG] Starting parser thread" );
-        Parser parser = new Parser("Parser 1");
-        
-        /** Filter thread */
-        System.out.println( "[LOG] Starting filter thread" );
-        Filter filter = new Filter("Filter 1");
-        
-
         /** Store thread */
         System.out.println( "[LOG] Starting datastorage thread" );
         DataStorage datastorage = new DataStorage("Datastorage 1");
