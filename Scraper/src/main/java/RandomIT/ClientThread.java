@@ -1,4 +1,5 @@
 package RandomIT;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -27,11 +28,7 @@ class ClientThread extends Thread
           line = in.readLine();
           out += (line + "\n");
           if(line.equals("</WEATHERDATA>")) {
-            ServerThread.xml.push(out);
-            //String xml = ServerThread.xml.getLast();
-            //System.out.println(xml);
-            int count = ServerThread.xml.size();
-            System.out.println("aantal XML bestanden: " + count);
+            Run.rawinput.add(out);
             out = "";
           }
         }

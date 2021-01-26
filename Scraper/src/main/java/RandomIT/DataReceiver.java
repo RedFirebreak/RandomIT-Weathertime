@@ -1,4 +1,4 @@
-package RandomIT;
+//package RandomIT;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -9,7 +9,6 @@ class DataReceiver implements Runnable {
    private Socket socket = null;
    private ServerSocket server = null;
    private int port = 7789;
-   public static Stack<String> xml = new Stack<String>();
 
    DataReceiver(String name) {
       threadName = name;
