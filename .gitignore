@@ -2,6 +2,9 @@
 # Pls upload no config
 web/src/config.php
 
+#leave the data files at home please
+data/*
+
 # Package Files #
 web/src/logs/*.log
 web/src/logs/filtered/*.log
