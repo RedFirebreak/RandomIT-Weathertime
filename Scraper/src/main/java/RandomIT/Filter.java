@@ -155,7 +155,7 @@ class Filter implements Runnable {
       /* Infinite loop */
       while(true) {
          if (Run.validinput.isEmpty()) {
-            // Do nothing
+            // Do nothing        
          } else {
                //Make list for clients.
                List<String> clientlist = new ArrayList<String>();
