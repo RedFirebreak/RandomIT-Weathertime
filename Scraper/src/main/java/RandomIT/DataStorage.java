@@ -1,9 +1,17 @@
 package RandomIT;
 
+import java.util.HashMap;
+import org.json.simple.JSONObject;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.io.File;
+
 class DataStorage implements Runnable {
    private Thread t;
    private String threadName;
-   
+   private static FileWriter file;
+
    DataStorage( String name) {
       threadName = name;
       System.out.println("[DATASTORAGE] Creating and starting " +  threadName );
@@ -12,13 +20,80 @@ class DataStorage implements Runnable {
    // Runs the thread, insert code here to be run
    public void run() {
       System.out.println("[DATASTORAGE] Running " +  threadName );
-      int i = 0;
       /* Infinite loop */
-      while(i < 25) {
-         System.out.println( "[DATASTORAGE] RunAmount: " + i );
-         i = i + 1;
+      while(true) {
+
+         if (Run.filteredinput.isEmpty()) {
+            // Do nothing
+         } else {
+            // Get a hashmap from the list
+            HashMap<String, String> hashmap = Run.filteredinput.poll();
+
+            // Get the required variables
+            String stationID = hashmap.get("StationNumber");
+            long timestamp = System.currentTimeMillis();
+
+            // Add a current timestamp of processing for saving the date
+            hashmap.put("Timestamp", String.valueOf(timestamp));
+
+            // Turn the hasmap into JSON 
+            JSONObject json = new JSONObject();
+            json.putAll( hashmap );
+
+            // Save the json in the main data file
+            try {
+               // Make sure the directory is created
+               File directory = new File("../data/");
+               if (! directory.exists()){
+                  directory.mkdir();
+               }
+
+               // Constructs a FileWriter given a file name, using the platform's default charset
+               file = new FileWriter("../data/" + stationID + "-" + timestamp + ".json");
+               file.write(json.toJSONString());
+            } catch (IOException e) {
+                  e.printStackTrace();
+            } finally {
+               try {
+                  file.flush();
+                  file.close();
+               } catch (IOException e) {
+                  e.printStackTrace();
+               }
+            }
+
+            if (hashmap.get("klant") == "") {
+               // No extra data saving is required
+            } else { // Save the json in the client-folder aswell
+               // Explode the string and put the pieces into an array
+               String[] clients = hashmap.get("klant").split("_");
+
+               // Walk trough the array, 
+               for (String clientname : clients) {
+                  // Make sure the directory is created
+                  File directory = new File("../data/" + clientname);
+                  if (! directory.exists()){
+                     directory.mkdir();
+                  }
+
+                  try {
+                     // Constructs a FileWriter given a file name, using the platform's default charset
+                     file = new FileWriter("../data/" + clientname + "/" + stationID + "-" + timestamp + ".json");
+                     file.write(json.toJSONString());
+                  } catch (IOException e) {
+                        e.printStackTrace();
+                  } finally {
+                     try {
+                        file.flush();
+                        file.close();
+                     } catch (IOException e) {
+                        e.printStackTrace();
+                     }
+                  }
+               }
+            }
+         }
       }
-      System.out.println("[DATASTORAGE] Thread " +  threadName + " exiting.");
    }
    
    // Starts the thread
