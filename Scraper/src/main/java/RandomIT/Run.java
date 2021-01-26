@@ -5,9 +5,9 @@ import java.util.LinkedList;
 
 
 public class Run {
-    public static final Queue<String> rawinput = new LinkedList<String>();
-    public static final Queue<HashMap<String, String>> validinput = new LinkedList<HashMap<String, String>>();
-    public static final Queue<HashMap<String, String>> filteredinput = new LinkedList<HashMap<String, String>>();
+    public static volatile Queue<String> rawinput = new LinkedList<String>();
+    public static volatile Queue<HashMap<String, String>> validinput = new LinkedList<HashMap<String, String>>();
+    public static volatile Queue<HashMap<String, String>> filteredinput = new LinkedList<HashMap<String, String>>();
 
     public static void main( String[] args ) throws InterruptedException {
 
@@ -39,7 +39,7 @@ public class Run {
         datastorage.start();
 
         while(true){
-          System.out.println("RAWINPUT SIZE: " + rawinput.size());
+          //System.out.println("RAWINPUT SIZE: " + rawinput.size());
           //System.out.println("VALIDINPUT SIZE: " + validinput.size());
           //System.out.println("FILTEREDINPUT SIZE: " + filteredinput.size());
         }

@@ -15,9 +15,8 @@ class DataReceiver implements Runnable {
    }
 
    // Runs the thread, insert code here to be run. If the thread is done, it will exit automatically. Make an infinite loop to make sure it stays active if needed.
-   public void run() {
-     try
-     {
+   public synchronized void run() {
+     try {
        // starts server and waits for a connection
        server = new ServerSocket(port);
 
@@ -26,9 +25,7 @@ class DataReceiver implements Runnable {
          socket = server.accept();
          new ClientThread(socket).start();
        }
-     }
-     catch(IOException | NullPointerException i)
-     {
+     } catch(IOException | NullPointerException i){
      }
       //System.out.println("[RECEIVER] Thread " +  threadName + " exiting.");
    }

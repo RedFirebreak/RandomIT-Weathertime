@@ -18,11 +18,12 @@ class DataStorage implements Runnable {
    }
    
    // Runs the thread, insert code here to be run
-   public void run() {
+   public synchronized void run() {
       System.out.println("[DATASTORAGE] Running " +  threadName );
       /* Infinite loop */
       while(true) {
-         if (!Run.filteredinput.isEmpty()) {
+         int queueAmount = Run.filteredinput.size();
+         if (queueAmount > 0) {
             // Get a hashmap from the list
             HashMap<String, String> hashmap = Run.filteredinput.poll();
 

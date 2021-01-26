@@ -10,7 +10,7 @@ class Filter implements Runnable {
    }
    
    // Runs the thread, insert code here to be run
-   public void run() {
+   public synchronized void run() {
       System.out.println("[FILTER] Running " +  threadName );
       /* Infinite loop */
       while(true) {

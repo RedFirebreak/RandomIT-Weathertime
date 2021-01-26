@@ -14,9 +14,6 @@ web/src/logs/filtered/*.log
 *.tar.gz
 *.rar
 
-# Fuck those class files man.
-*.class
-
 # Log files
 *.log
 
@@ -24,9 +21,11 @@ web/src/logs/filtered/*.log
 *.class
 .classpath
 .project
-Scraper/target/
-
 
 # Dont upload the composer stuff #
 /web/vendor/
+
+# Maven project cleanup
+*.class
 Scraper/.settings/
+Scraper/target/

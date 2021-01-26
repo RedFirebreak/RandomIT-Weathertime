@@ -13,10 +13,8 @@ class ClientThread extends Thread
         this.socket = socket;
     }
 
-    public void run()
-    {
-      try
-      {
+    public synchronized void run() {
+      try {
         // takes input from the client socket
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String line = "";
@@ -30,9 +28,7 @@ class ClientThread extends Thread
             out = "";
           }
         }
-      }
-      catch(IOException | NullPointerException i)
-      {
+      } catch(IOException | NullPointerException i) {
       }
     }
 }
