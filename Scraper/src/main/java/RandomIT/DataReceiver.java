@@ -1,23 +1,35 @@
 package RandomIT;
+import java.io.*;
+import java.net.*;
 
 class DataReceiver implements Runnable {
    private Thread t;
    private String threadName;
-   
-   DataReceiver( String name) {
+   private Socket socket = null;
+   private ServerSocket server = null;
+   private int port = 7789;
+
+   DataReceiver(String name) {
       threadName = name;
       System.out.println("[RECEIVER] Creating and starting " +  threadName );
    }
-   
+
    // Runs the thread, insert code here to be run. If the thread is done, it will exit automatically. Make an infinite loop to make sure it stays active if needed.
    public void run() {
-      System.out.println("[RECEIVER] Running " +  threadName );
-      int i = 0;
-      /* Infinite loop */
-      while(i < 25) {
-         System.out.println( "[RECEIVER] RunAmount: " + i );
-         i = i + 1;
-      }
+     try
+     {
+       // starts server and waits for a connection
+       server = new ServerSocket(port);
+
+       while(true)
+       {
+         socket = server.accept();
+         new ClientThread(socket).start();
+       }
+     }
+     catch(IOException | NullPointerException i)
+     {
+     }
       //System.out.println("[RECEIVER] Thread " +  threadName + " exiting.");
    }
 
