@@ -17,6 +17,7 @@ class Filter implements Runnable {
    public synchronized void run() {
       System.out.println("[FILTER] Running " +  threadName );
       ArrayList<String> stationListClient1 = new ArrayList<String>();
+
          //Countries'stations neighbouring Iran + Iran.
          stationListClient1.add("375750"); //Azerbaijan
          stationListClient1.add("378630");
@@ -147,19 +148,21 @@ class Filter implements Runnable {
 
          pacificstationListClient1.add("916100"); //Kiribati
 
-
       /* Infinite loop */
       while(true) {
-         if (Run.validinput.isEmpty()) {
-            // Do nothing        
-         } else {
+         int queueAmount = Run.validinput.size();
+         if (queueAmount > 0) {
+               //Make list for clients.
+               List<String> clientlist = new ArrayList<String>();
 
-               // Client 1 : University of Theran
-                  //Make list for clients.
-                  List<String> clientlist = new ArrayList<String>();
+               //Hashmap containing valid data.
+               HashMap<String, String> hashmap = Run.validinput.poll();
 
-                  //Hashmap containing valid data.
-                  HashMap<String, String> hashmap = Run.validinput.poll();
+               //Filter for Iran's neighbouring countries
+               if(stationListClient1.contains(hashmap.get("StationNumber"))){
+                  //Filtered data required by client comes through. Add client name to list.
+                  clientlist.add("UniversityTeheran");   
+               }
 
                //Filter for clients requirements of data from Pacific stations.
                if(pacificstationListClient1.contains(hashmap.get("StationNumber"))){
@@ -173,23 +176,13 @@ class Filter implements Runnable {
                         clientlist.add("UniversityTeheran");
                      }
                   }
+               }
 
-                  //Filter for clients requirements of data from Pacific stations.
-                  if(pacificstationListClient1.contains(hashmap.get("StationNumber"))){
-                     String temperature = hashmap.get("Temperature");
-                     Double temp = Double.parseDouble(temperature);
+               //Put client name from list into hashmap.
+               hashmap.put("Client", clientlist.toString());
 
-                     if(temp >= 0 || temp <= 10){
-                        //Filtered data required by client comes through. Add client name to list.
-                        clientlist.add("UniversityTeheran");
-                     }
-                  }
-
-                  //Put client name from list into hashmap.
-                  hashmap.put("Client", clientlist.toString());
-
-                  //Submit filtered data.
-                  Run.filteredinput.add(hashmap);
+               //Submit filtered data.
+               Run.filteredinput.add(hashmap);
          }
       }
    }

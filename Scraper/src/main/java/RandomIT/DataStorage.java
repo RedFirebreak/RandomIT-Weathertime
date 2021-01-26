@@ -26,9 +26,15 @@ class DataStorage implements Runnable {
             // Get a hashmap from the list
             HashMap<String, String> hashmap = Run.filteredinput.poll();
 
-            // Get the required variables
-            String stationID = hashmap.get("StationNumber");
             long timestamp = System.currentTimeMillis();
+            String stationID = "INVALID";
+
+            // Get the required variables
+            try {
+               stationID = hashmap.get("StationNumber");
+            } catch (Exception e) {  
+               System.out.println(e + "UWU I CRASHED");
+            }
 
             // Add a current timestamp of processing for saving the date
             hashmap.put("Timestamp", String.valueOf(timestamp));
@@ -50,13 +56,6 @@ class DataStorage implements Runnable {
                file.write(json.toJSONString());
             } catch (IOException e) {
                   e.printStackTrace();
-            } finally {
-               try {
-                  file.flush();
-                  file.close();
-               } catch (IOException e) {
-                  e.printStackTrace();
-               }
             }
 
             if (hashmap.get("Client") == "") {
@@ -83,13 +82,6 @@ class DataStorage implements Runnable {
                      file.write(json.toJSONString());
                   } catch (IOException e) {
                         e.printStackTrace();
-                  } finally {
-                     try {
-                        file.flush();
-                        file.close();
-                     } catch (IOException e) {
-                        e.printStackTrace();
-                     }
                   }
                }
             }
@@ -98,7 +90,7 @@ class DataStorage implements Runnable {
    }
    
    // Starts the thread
-   public void start () {
+   public void start() {
       System.out.println("[DATASTORAGE] Starting " +  threadName );
       if (t == null) {
          t = new Thread (this, threadName);

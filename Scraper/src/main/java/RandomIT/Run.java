@@ -15,11 +15,9 @@ public class Run {
         System.out.println( "[LOG] Starting receiver thread" );
         DataReceiver datareceiver = new DataReceiver("Receiver 1");
 
-
         /** Parser thread */
         System.out.println( "[LOG] Starting parser thread" );
         Parser parser = new Parser("Parser 1");
-
 
         /** Filter thread */
         System.out.println( "[LOG] Starting filter thread" );
@@ -27,7 +25,7 @@ public class Run {
 
         /** Store thread */
         System.out.println( "[LOG] Starting datastorage thread" );
-        DataStorage datastorage = new DataStorage("Datastorage 1");
+        DataStorage datastorage1 = new DataStorage("Datastorage 1");
 
         System.out.println( "[LOG] Starting server thread" );
 
@@ -35,7 +33,7 @@ public class Run {
         datareceiver.start();
         parser.start();
         filter.start();
-        datastorage.start();
+        datastorage1.start();
 
         while(true){
           //System.out.println("RAWINPUT SIZE: " + rawinput.size());
