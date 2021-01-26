@@ -161,10 +161,17 @@ class Filter implements Runnable {
                   //Hashmap containing valid data.
                   HashMap<String, String> hashmap = Run.validinput.poll();
 
-                  //Filter for Iran's neighbouring countries
-                  if(stationListClient1.contains(hashmap.get("StationNumber"))){
-                     //Filtered data required by client comes through. Add client name to list.
-                     clientlist.add("UniversityTeheran");   
+               //Filter for clients requirements of data from Pacific stations.
+               if(pacificstationListClient1.contains(hashmap.get("StationNumber"))){
+                  String temperature = hashmap.get("Temperature");
+
+                  if(temperature != "MISSING"){
+                     Double temp = Double.parseDouble(temperature);
+
+                     if(temp >= 0 || temp <= 10){
+                        //Filtered data required by client comes through. Add client name to list.
+                        clientlist.add("UniversityTeheran");
+                     }
                   }
 
                   //Filter for clients requirements of data from Pacific stations.
