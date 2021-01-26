@@ -24,7 +24,6 @@ public class Run {
         /** Filter thread */
         System.out.println( "[LOG] Starting filter thread" );
         Filter filter = new Filter("Filter 1");
-        
 
         /** Store thread */
         System.out.println( "[LOG] Starting datastorage thread" );
