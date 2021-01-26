@@ -14,6 +14,9 @@ web/src/logs/filtered/*.log
 *.tar.gz
 *.rar
 
+# Fuck those class files man.
+*.class
+
 # Log files
 *.log
 

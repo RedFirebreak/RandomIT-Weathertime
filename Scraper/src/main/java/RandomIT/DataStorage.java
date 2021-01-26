@@ -62,11 +62,15 @@ class DataStorage implements Runnable {
                }
             }
 
-            if (hashmap.get("klant") == "") {
+            if (hashmap.get("Client") == "") {
                // No extra data saving is required
             } else { // Save the json in the client-folder aswell
-               // Explode the string and put the pieces into an array
-               String[] clients = hashmap.get("klant").split("_");
+
+               // Remove [] and all special chars from string 
+               String rawclients = hashmap.get("Client").replaceAll("[^a-zA-Z, ]","");
+
+               // Split into array from different clients
+               String[] clients = rawclients.split(", ");
 
                // Walk trough the array, 
                for (String clientname : clients) {
