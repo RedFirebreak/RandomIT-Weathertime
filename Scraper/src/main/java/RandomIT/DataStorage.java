@@ -4,7 +4,6 @@ import java.util.HashMap;
 import org.json.simple.JSONObject;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.io.File;
 
 class DataStorage implements Runnable {
