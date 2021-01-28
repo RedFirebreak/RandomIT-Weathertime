@@ -159,27 +159,41 @@ class Filter implements Runnable {
                HashMap<String, String> hashmap = Run.validinput.poll();
 
                //Filter for Iran's neighbouring countries
-               if(stationListClient1.contains(hashmap.get("StationNumber"))){
-                  //Filtered data required by client comes through. Add client name to list.
-                  clientlist.add("UniversityTeheran");   
+               try {
+                  if(stationListClient1.contains(hashmap.get("StationNumber"))){
+                     //Filtered data required by client comes through. Add client name to list.
+                     clientlist.add("UniversityTeheran");   
+                  }
+               } catch (Exception e) {
+
                }
+               
 
                //Filter for clients requirements of data from Pacific stations.
-               if(pacificstationListClient1.contains(hashmap.get("StationNumber"))){
-                  String temperature = hashmap.get("Temperature");
+               try {
+                  if(pacificstationListClient1.contains(hashmap.get("StationNumber"))){
+                     String temperature = hashmap.get("Temperature");
 
-                  if(temperature != "MISSING"){
-                     Double temp = Double.parseDouble(temperature);
+                     if(temperature != "MISSING"){
+                        Double temp = Double.parseDouble(temperature);
 
-                     if(temp >= 0 || temp <= 10){
-                        //Filtered data required by client comes through. Add client name to list.
-                        clientlist.add("UniversityTeheran");
+                        if(temp >= 0 || temp <= 10){
+                           //Filtered data required by client comes through. Add client name to list.
+                           clientlist.add("UniversityTeheran");
+                        }
                      }
                   }
+               } catch (Exception e) {
+
                }
+               
 
                //Put client name from list into hashmap.
-               hashmap.put("Client", clientlist.toString());
+               try {
+                  hashmap.put("Client", clientlist.toString());
+               } catch (Exception e) {
+                  
+               }
 
                //Submit filtered data.
                Run.filteredinput.add(hashmap);

@@ -33,11 +33,15 @@ class DataStorage implements Runnable {
             try {
                stationID = hashmap.get("StationNumber");
             } catch (Exception e) {  
-               System.out.println(e + "UWU I CRASHED");
+               //
             }
 
             // Add a current timestamp of processing for saving the date
-            hashmap.put("Timestamp", String.valueOf(timestamp));
+            try {
+               hashmap.put("Timestamp", String.valueOf(timestamp));
+            } catch (Exception e) {
+
+            }
 
             // Turn the hasmap into JSON 
             JSONObject json = new JSONObject();
@@ -56,6 +60,13 @@ class DataStorage implements Runnable {
                file.write(json.toJSONString());
             } catch (IOException e) {
                   e.printStackTrace();
+            } finally {
+               try {
+                  file.flush();
+                  //file.close();
+               } catch (Exception e) {
+                  System.out.println("DADDY PLS I CRASHED AGAIN :(");
+               }
             }
 
             if (hashmap.get("Client") == "") {
@@ -82,6 +93,13 @@ class DataStorage implements Runnable {
                      file.write(json.toJSONString());
                   } catch (IOException e) {
                         e.printStackTrace();
+                  } finally {
+                     try {
+                        file.flush();
+                        //file.close();
+                     } catch (Exception e) {
+                        System.out.println("DADDY PLS I CRASHED AGAIN :(");
+                     }
                   }
                }
             }
