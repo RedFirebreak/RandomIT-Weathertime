@@ -18,6 +18,26 @@
 </head>
 
 <body>
+<?php
+    function createMarkers(){ //FUNCTION TO READ AND CREATE THE MARKERS
+    $dir = 'data';
+    $files = scandir($dir, SCANDIR_SORT_ASCENDING);
+
+        // steps through every file in the dir
+        foreach($files as $file) {
+            echo $file;
+            $expl = explode('-', $file);
+            if (sizeof($expl) > 1) {
+                // bepaal welke data uit de afgelopen x dagen komt.
+                $time = round(intval($expl[1]) / 1000);
+                echo "poep";
+                //if ($time > $days * 86400) {
+                  //  $jsonFile = file_get_contents("data/" . $file);
+
+            }
+        }
+    }
+?>
     <?php
     // if the user is logged in, send him to the dashboard!
     require "$ROOTPATH/pages/navigation.php";
@@ -84,7 +104,7 @@
     <script>
         var map = L.map('map').setView([30.354086618820002, 30.9578856290658], 3);
         L.tileLayer('worldmap/{z}/{x}/{y}.png', {
-            maxZoom: 5,
+            maxZoom: 7,
             minZoom: 3,
             tileSize: 512,
             zoomOffset: -1
@@ -113,9 +133,27 @@
 
         var markers_icon = new Icons_2 ({ iconUrl: 'Marker/marker-icon-2x.png' });
         L.marker([37.533, 45.038], { icon: markers_icon }).addTo(map)
-            .bindPopup("<b>IRAN</b><br />IRAN.").openPopup(); //HIER MARKERS MAKEN
-        L.marker([38, 40], { icon: markers_icon }).addTo(map)
-            .bindPopup("<b>IRAN2</b><br />IRAN2.").openPopup(); //HIER MARKERS MAKEN
+            .bindPopup("<b>ORUMIEH</b><br />IRAN.").openPopup(); //TESTMARKERS FOR THE REHEARSAL
+        L.marker([37.467,49.467], { icon: markers_icon }).addTo(map)
+            .bindPopup("<b>ANZALI</b><br />IRAN2.").openPopup();
+        L.marker([37.2,49.633,37], { icon: markers_icon }).addTo(map)
+             .bindPopup("<b>RASHT</b><br />IRAN2.").openPopup();
+        L.marker([36.683,48.483], { icon: markers_icon }).addTo(map)
+             .bindPopup("<b>ZANJAN</b><br />IRAN2.").openPopup();
+        L.marker([35.4,51.15,], { icon: markers_icon }).addTo(map)
+             .bindPopup("<b>IMAM KHOMENI</b><br />IRAN2.").openPopup();
+        L.marker([36.25,50], { icon: markers_icon }).addTo(map)
+             .bindPopup("<b>GHAZVIN</b><br />IRAN.").openPopup();
+        L.marker([36.9,50.667], { icon: markers_icon }).addTo(map)
+             .bindPopup("<b>RAMSAR</b><br />IRAN2.").openPopup();
+        L.marker([35.4,51.15,101], { icon: markers_icon }).addTo(map)
+             .bindPopup("<b>NOSHAHR</b><br />IRAN2.").openPopup();
+        L.marker([36.717,52.65], { icon: markers_icon }).addTo(map)
+             .bindPopup("<b>BABULSAR</b><br />IRAN2.").openPopup();
+        L.marker([36.417,54.95], { icon: markers_icon }).addTo(map)
+             .bindPopup("<b>SHAHRUD</b><br />IRAN2.").openPopup();
+
+
     </script>
 </body>
 
