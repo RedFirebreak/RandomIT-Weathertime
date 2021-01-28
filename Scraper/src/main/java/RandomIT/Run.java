@@ -9,7 +9,7 @@ public class Run {
   public static volatile Queue<HashMap<String, String>> validinput = new LinkedList<HashMap<String, String>>();
   public static volatile Queue<HashMap<String, String>> filteredinput = new LinkedList<HashMap<String, String>>();
 
-  public static void main(String[] args) throws InterruptedException {
+  public static void main(String[] args) {
 
     //Receiver thread
     System.out.println("[LOG] Starting receiver thread");

@@ -172,7 +172,7 @@ class Filter implements Runnable {
                if (pacificstationListClient1.contains(hashmap.get("StationNumber"))) {
                   String temperature = hashmap.get("Temperature");
 
-                  if (temperature != "MISSING") {
+                  if (temperature.equals("MISSING")) {
                      Double temp = Double.parseDouble(temperature);
 
                      if (temp >= 0 || temp <= 10) {

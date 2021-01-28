@@ -43,9 +43,13 @@ class DataStorage implements Runnable {
                //e.printStackTrace();
             }
 
-            //Turn the hasmap into JSON 
+            //Turn the hashmap into JSON 
             JSONObject json = new JSONObject();
-            json.putAll(hashmap);
+            try {
+               json.putAll(hashmap);
+            } catch (Exception e) {
+               //e.printStackTrace();
+            }
 
             //Save the json in the main data file
             try {
@@ -58,7 +62,7 @@ class DataStorage implements Runnable {
                //Constructs a FileWriter given a file name, using the platform's default charset
                file = new FileWriter("../data/" + stationID + "-" + timestamp + ".json");
                file.write(json.toJSONString());
-            } catch (IOException e) {
+            } catch (Exception e) {
                   //e.printStackTrace();
             } finally {
                try {
@@ -69,7 +73,7 @@ class DataStorage implements Runnable {
                }
             }
 
-            if (hashmap.get("Client") == "") {
+            if (hashmap.get("Client").equals("")) {
                //No extra data saving is required
             } else { //Save the json in the client-folder aswell
 
@@ -88,7 +92,7 @@ class DataStorage implements Runnable {
                   }
 
                   try {
-                     // Constructs a FileWriter given a file name, using the platform's default charset
+                     //Constructs a FileWriter given a file name, using the platform's default charset
                      file = new FileWriter("../data/" + clientname + "/" + stationID + "-" + timestamp + ".json");
                      file.write(json.toJSONString());
                   } catch (IOException e) {
