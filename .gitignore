@@ -29,3 +29,6 @@ web/src/logs/filtered/*.log
 *.class
 Scraper/.settings/
 Scraper/target/
+
+# IDEA
+.idea

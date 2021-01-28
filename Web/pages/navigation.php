@@ -15,9 +15,32 @@
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo $config['sitepath'] ?>">Log-in</a>
+                <?php if ($Loggedin) { ?>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="account" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <img src="./src/img/thonk.png" width="30" height="30"
+                            class="rounded-circle d-inline-block align-top" alt="">
+                        Welcome <?php echo $LoggedinUsername ?>
+                    </a>
+                    <div class=" dropdown-menu" aria-labelledby="account">
+
+                        <a style="color: red;" class="dropdown-item" href="?logout=1">
+                            log-out
+                        </a>
+
+                    </div>
                 </li>
+
+
+                <?php } else { ?>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="login.php">Log-in</a>
+                </li>
+
+                <?php } ?>
             </ul>
         </div>
 
