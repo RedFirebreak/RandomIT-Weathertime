@@ -73,39 +73,43 @@ class DataStorage implements Runnable {
                }
             }
 
-            if (hashmap.get("Client").equals("")) {
-               //No extra data saving is required
-            } else { //Save the json in the client-folder aswell
+            try {
+               if (hashmap.get("Client").equals("")) {
+                  //No extra data saving is required
+               } else { //Save the json in the client-folder aswell
 
-               //Remove [] and all special chars from string 
-               String rawclients = hashmap.get("Client").replaceAll("[^a-zA-Z, ]", "");
+                  //Remove [] and all special chars from string 
+                  String rawclients = hashmap.get("Client").replaceAll("[^a-zA-Z, ]", "");
 
-               //Split into array from different clients
-               String[] clients = rawclients.split(", ");
+                  //Split into array from different clients
+                  String[] clients = rawclients.split(", ");
 
-               //Walk trough the array
-               for (String clientname : clients) {
-                  //Make sure the directory is created
-                  File directory = new File("../data/" + clientname);
-                  if (!directory.exists()) {
-                     directory.mkdir();
-                  }
+                  //Walk trough the array
+                  for (String clientname : clients) {
+                     //Make sure the directory is created
+                     File directory = new File("../data/" + clientname);
+                     if (!directory.exists()) {
+                        directory.mkdir();
+                     }
 
-                  try {
-                     //Constructs a FileWriter given a file name, using the platform's default charset
-                     file = new FileWriter("../data/" + clientname + "/" + stationID + "-" + timestamp + ".json");
-                     file.write(json.toJSONString());
-                  } catch (IOException e) {
-                        //e.printStackTrace();
-                  } finally {
                      try {
-                        file.flush();
-                        //file.close();
-                     } catch (Exception e) {
-                        //e.printStackTrace();
+                        //Constructs a FileWriter given a file name, using the platform's default charset
+                        file = new FileWriter("../data/" + clientname + "/" + stationID + "-" + timestamp + ".json");
+                        file.write(json.toJSONString());
+                     } catch (IOException e) {
+                           //e.printStackTrace();
+                     } finally {
+                        try {
+                           file.flush();
+                           //file.close();
+                        } catch (Exception e) {
+                           //e.printStackTrace();
+                        }
                      }
                   }
                }
+            } catch (Exception e) {
+               //e.printStackTrace();
             }
          }
       }
