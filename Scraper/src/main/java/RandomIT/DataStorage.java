@@ -11,79 +11,79 @@ class DataStorage implements Runnable {
    private String threadName;
    private static FileWriter file;
 
-   DataStorage( String name) {
+   DataStorage(String name) {
       threadName = name;
-      System.out.println("[DATASTORAGE] Creating and starting " +  threadName );
+      System.out.println("[DATASTORAGE] Creating and starting " +  threadName);
    }
    
-   // Runs the thread, insert code here to be run
+   //Runs the thread, insert code here to be run
    public synchronized void run() {
-      System.out.println("[DATASTORAGE] Running " +  threadName );
-      /* Infinite loop */
-      while(true) {
+      System.out.println("[DATASTORAGE] Running " + threadName);
+      //Infinite loop
+      while (true) {
          int queueAmount = Run.filteredinput.size();
          if (queueAmount > 0) {
-            // Get a hashmap from the list
+            //Get a hashmap from the list
             HashMap<String, String> hashmap = Run.filteredinput.poll();
 
             long timestamp = System.currentTimeMillis();
             String stationID = "INVALID";
 
-            // Get the required variables
+            //Get the required variables
             try {
                stationID = hashmap.get("StationNumber");
             } catch (Exception e) {  
-               //
+               //e.printStackTrace();
             }
 
-            // Add a current timestamp of processing for saving the date
+            //Add a current timestamp of processing for saving the date
             try {
                hashmap.put("Timestamp", String.valueOf(timestamp));
             } catch (Exception e) {
-
+               //e.printStackTrace();
             }
 
-            // Turn the hasmap into JSON 
+            //Turn the hasmap into JSON 
             JSONObject json = new JSONObject();
-            json.putAll( hashmap );
+            json.putAll(hashmap);
 
-            // Save the json in the main data file
+            //Save the json in the main data file
             try {
-               // Make sure the directory is created
+               //Make sure the directory is created
                File directory = new File("../data/");
-               if (! directory.exists()){
+               if (!directory.exists()) {
                   directory.mkdir();
                }
 
-               // Constructs a FileWriter given a file name, using the platform's default charset
+               //Constructs a FileWriter given a file name, using the platform's default charset
                file = new FileWriter("../data/" + stationID + "-" + timestamp + ".json");
                file.write(json.toJSONString());
             } catch (IOException e) {
-                  e.printStackTrace();
+                  //e.printStackTrace();
             } finally {
                try {
                   file.flush();
                   //file.close();
                } catch (Exception e) {
-                  System.out.println("DADDY PLS I CRASHED AGAIN :(");
+                  //e.printStackTrace();
                }
             }
 
             if (hashmap.get("Client") == "") {
-               // No extra data saving is required
-            } else { // Save the json in the client-folder aswell
+               //No extra data saving is required
+            } else { //Save the json in the client-folder aswell
 
-               // Remove [] and all special chars from string 
-               String rawclients = hashmap.get("Client").replaceAll("[^a-zA-Z, ]","");
+               //Remove [] and all special chars from string 
+               String rawclients = hashmap.get("Client").replaceAll("[^a-zA-Z, ]", "");
 
-               // Split into array from different clients
+               //Split into array from different clients
                String[] clients = rawclients.split(", ");
 
-               // Walk trough the array, 
+               //Walk trough the array
                for (String clientname : clients) {
-                  // Make sure the directory is created
+                  //Make sure the directory is created
                   File directory = new File("../data/" + clientname);
-                  if (! directory.exists()){
+                  if (!directory.exists()) {
                      directory.mkdir();
                   }
 
@@ -92,13 +92,13 @@ class DataStorage implements Runnable {
                      file = new FileWriter("../data/" + clientname + "/" + stationID + "-" + timestamp + ".json");
                      file.write(json.toJSONString());
                   } catch (IOException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
                   } finally {
                      try {
                         file.flush();
                         //file.close();
                      } catch (Exception e) {
-                        System.out.println("DADDY PLS I CRASHED AGAIN :(");
+                        //e.printStackTrace();
                      }
                   }
                }
@@ -107,12 +107,12 @@ class DataStorage implements Runnable {
       }
    }
    
-   // Starts the thread
+   //Starts the thread
    public void start() {
-      System.out.println("[DATASTORAGE] Starting " +  threadName );
+      System.out.println("[DATASTORAGE] Starting " +  threadName);
       if (t == null) {
-         t = new Thread (this, threadName);
-         t.start ();
+         t = new Thread(this, threadName);
+         t.start();
       }
    }
- }
+}

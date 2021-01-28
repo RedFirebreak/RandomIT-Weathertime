@@ -10,12 +10,12 @@ class Parser implements Runnable {
    
    Parser( String name) {
       threadName = name;
-      System.out.println("[PARSER] Creating and starting " +  threadName );
+      System.out.println("[PARSER] Creating and starting " +  threadName);
    }
    
    // Runs the thread, insert code here to be run
    public synchronized void run() {
-      System.out.println("[PARSER] Running " +  threadName );
+      System.out.println("[PARSER] Running " +  threadName);
       
       //Load all valid stations
       ArrayList<String> validStationNumbers = new ArrayList<String>();
@@ -25,10 +25,10 @@ class Parser implements Runnable {
             validStationNumbers.add(line);
          }
       } catch (Exception e) {  
-         e.printStackTrace();  
+         //e.printStackTrace();  
       }
 
-      while(true) {
+      while (true) {
          int queueAmount = Run.rawinput.size();
          HashMap<String, String> returnHash = new HashMap<String, String>();
          if (queueAmount > 0) {
@@ -42,7 +42,7 @@ class Parser implements Runnable {
                
                if (xmlString.contains("<MEASUREMENT>")) {
                   for (String subString : xmlString.split("<MEASUREMENT>")) {
-                     if(subString.contains("STN")) {
+                     if (subString.contains("STN")) {
                         String stationNumber = subString.substring(subString.indexOf("<STN>") + 5, subString.indexOf("</STN>"));
                         if ((!stationNumber.isEmpty() && validStationNumbers.contains(stationNumber)) || stationNumber != null || validStationNumbers.contains(stationNumber)) {
                            String date = subString.substring(subString.indexOf("<DATE>") + 6, subString.indexOf("</DATE>"));
@@ -63,7 +63,7 @@ class Parser implements Runnable {
                            returnHash.put("Date", date);
                            returnHash.put("Time", time);
 
-                           if(!temperature.isEmpty() && temperature != null) {
+                           if (!temperature.isEmpty() && temperature != null) {
                               if (Double.parseDouble(temperature) >= -9999.9 && Double.parseDouble(temperature) <= 9999.9) { 
                                  returnHash.put("Temperature", temperature);
                               } else {
@@ -197,8 +197,7 @@ class Parser implements Runnable {
                      }
                   }
                }
-            } catch (Exception e) {  
-               //System.out.println("HI I CRASHED KEKW");
+            } catch (Exception e) { 
                //e.printStackTrace();  
             }
          }
@@ -206,11 +205,11 @@ class Parser implements Runnable {
    }
 
    // Starts the thread
-   public void start () {
-      System.out.println("[PARSER] Starting " +  threadName );
+   public void start() {
+      System.out.println("[PARSER] Starting " +  threadName);
       if (t == null) {
-         t = new Thread (this, threadName);
-         t.start ();
+         t = new Thread(this, threadName);
+         t.start();
       }
    }
 }

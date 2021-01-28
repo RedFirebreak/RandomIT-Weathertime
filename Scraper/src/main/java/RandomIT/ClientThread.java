@@ -1,34 +1,35 @@
 package RandomIT;
-import java.io.*;
-import java.net.*;
 
-class ClientThread extends Thread
-{
-    private Socket socket;
-    private BufferedReader in = null;
-    private String out;
+import java.net.Socket;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
-    public ClientThread(Socket socket)
-    {
-        this.socket = socket;
-    }
+class ClientThread extends Thread {
+  private Socket socket;
+  private BufferedReader in = null;
+  private String out;
 
-    public synchronized void run() {
-      try {
-        // takes input from the client socket
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        String line = "";
+  public ClientThread(Socket socket) {
+    this.socket = socket;
+  }
 
-        while(true)
-        {
-          line = in.readLine();
-          out += (line + "\n");
-          if(line.equals("</WEATHERDATA>")) {
-            Run.rawinput.add(out);
-            out = "";
-          }
+  public synchronized void run() {
+    try {
+      //takes input from the client socket
+      in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      String line = "";
+
+      while (true) {
+        line = in.readLine();
+        out += (line + "\n");
+
+        if (line.equals("</WEATHERDATA>")) {
+          Run.rawinput.add(out);
+          out = "";
         }
-      } catch(IOException | NullPointerException i) {
       }
+    } catch (Exception e) { 
+      //e.printStackTrace();
     }
+  }
 }
