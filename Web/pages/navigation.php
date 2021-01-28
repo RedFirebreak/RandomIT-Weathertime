@@ -20,7 +20,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="account" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        <img src="./src/img/thonk.png" width="30" height="30"
+                        <img src="./src/img/defaultaccountimage.png" width="30" height="30"
                             class="rounded-circle d-inline-block align-top" alt="">
                         Welcome <?php echo $LoggedinUsername ?>
                     </a>
