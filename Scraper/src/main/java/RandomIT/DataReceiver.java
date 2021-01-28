@@ -1,6 +1,7 @@
 package RandomIT;
-import java.io.*;
-import java.net.*;
+
+import java.net.Socket;
+import java.net.ServerSocket;
 
 class DataReceiver implements Runnable {
    private Thread t;
@@ -11,31 +12,31 @@ class DataReceiver implements Runnable {
 
    DataReceiver(String name) {
       threadName = name;
-      System.out.println("[RECEIVER] Creating and starting " +  threadName );
+      System.out.println("[RECEIVER] Creating and starting " +  threadName);
    }
 
-   // Runs the thread, insert code here to be run. If the thread is done, it will exit automatically. Make an infinite loop to make sure it stays active if needed.
+   //Runs the thread
    public synchronized void run() {
-     try {
-       // starts server and waits for a connection
-       server = new ServerSocket(port);
+      try {
+         //starts server and waits for a connection
+         server = new ServerSocket(port);
 
-       while(true)
-       {
-         socket = server.accept();
-         new ClientThread(socket).start();
-       }
-     } catch(IOException | NullPointerException i){
-     }
-      //System.out.println("[RECEIVER] Thread " +  threadName + " exiting.");
-   }
-
-   // Starts the thread
-   public void start () {
-      System.out.println("[RECEIVER] Starting " +  threadName );
-      if (t == null) {
-         t = new Thread (this, threadName);
-         t.start ();
+         while (true)
+         {
+            socket = server.accept();
+            new ClientThread(socket).start();
+         }
+      } catch (Exception e) {
+         //e.printStackTrace();
       }
    }
- }
+
+   //Starts the thread
+   public void start() {
+      System.out.println("[RECEIVER] Starting " +  threadName);
+      if (t == null) {
+         t = new Thread(this, threadName);
+         t.start();
+      }
+   }
+}

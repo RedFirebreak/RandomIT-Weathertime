@@ -31,6 +31,32 @@ $dbConnection = databaseConnect();
 // Start (or resume) a session for the current user
 session_start();
 
+
+// Logout from anywhere
+if (isset($_GET['logout'])) {
+    session_destroy();
+}
+
+// Check if user is logged in
+if (!isset($_SESSION['loggedin'])) {
+    $_SESSION['loggedin'] = false;
+}
+
+// Define logged in variables
+$SESSIONSTATUS = session_status();
+
+// Initialise the session so user variables can be used site-wide
+if ($_SESSION['loggedin'] == true && $SESSIONSTATUS == 2) {
+    $Loggedin = $_SESSION['loggedin'];
+    $LoggedinID = $_SESSION['id'];
+    $LoggedinUsername = $_SESSION['name'];
+} else {
+    // User is not logged in
+    $Loggedin = "";
+    $LoggedinID = "";
+    $LoggedinUsername = "";
+}
+
 ?>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -38,9 +64,6 @@ session_start();
 <meta name="description" content="" />
 <meta name="author" content="" />
 <link rel="shortcut icon" href="<?php echo $config['logopath'] ?>" type="image/x-icon" />
-
-<!-- FontAwesome -->
-<link href="<?php echo $SITE; ?>src/css/fontaswesome.css" rel="stylesheet" />
 
 <!-- Bootstrap -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"

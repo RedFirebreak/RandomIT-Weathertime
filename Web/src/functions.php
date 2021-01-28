@@ -26,7 +26,6 @@ function databaseConnect() {
     global $config;
 
     // Only open database connection if we actually have one
-    if ($config['mysql']['hostname'] = "") {
         //connect to database
         $db_conn = mysqli_connect(
             $config['mysql']['hostname'],
@@ -62,9 +61,6 @@ function databaseConnect() {
         }
         //echo "connected";
         return $db_conn;
-    } else {
-        echo "LOG: Config had no mysql info, skipping database connection";
-    }
 }
 
 function databaseDisconnect($db_conn) {
