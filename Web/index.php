@@ -22,6 +22,26 @@
 </head>
 
 <body>
+<?php
+    function createMarkers(){ //FUNCTION TO READ AND CREATE THE MARKERS
+    $dir = 'data';
+    $files = scandir($dir, SCANDIR_SORT_ASCENDING);
+
+        // steps through every file in the dir
+        foreach($files as $file) {
+            echo $file;
+            $expl = explode('-', $file);
+            if (sizeof($expl) > 1) {
+                // bepaal welke data uit de afgelopen x dagen komt.
+                $time = round(intval($expl[1]) / 1000);
+                echo "poep";
+                //if ($time > $days * 86400) {
+                  //  $jsonFile = file_get_contents("data/" . $file);
+
+            }
+        }
+    }
+?>
     <?php
     // if the user is logged in, send him to the dashboard!
     require "$ROOTPATH/pages/navigation.php";
@@ -87,13 +107,13 @@
     <script src="src/Icon.Label.js"></script>
     <script src="src/Icon.Label.Default.js"></script>
     <script>
-    var map = L.map('map').setView([30.354086618820002, 30.9578856290658], 3);
-    L.tileLayer('worldmap/{z}/{x}/{y}.png', {
-        maxZoom: 5,
-        minZoom: 3,
-        tileSize: 512,
-        zoomOffset: -1
-    }).addTo(map);
+        var map = L.map('map').setView([30.354086618820002, 30.9578856290658], 3);
+        L.tileLayer('iran/{z}/{x}/{y}.jpg', {
+            maxZoom: 8,
+            minZoom: 0,
+            tileSize: 512,
+            zoomOffset: -1
+        }).addTo(map);
 
     var Icons = L.Icon.extend({
         options: {
