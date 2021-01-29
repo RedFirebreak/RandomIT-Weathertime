@@ -24,7 +24,11 @@
                             class="rounded-circle d-inline-block align-top" alt="">
                         Welcome <?php echo $LoggedinUsername ?>
                     </a>
-                    <div class=" dropdown-menu" aria-labelledby="account">
+                    <div class="dropdown-menu" aria-labelledby="account">
+
+                        <a style="color: black;" class="dropdown-item" href="change_password.php">
+                            Change password
+                        </a>
 
                         <a style="color: red;" class="dropdown-item" href="?logout=1">
                             log-out
