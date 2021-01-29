@@ -103,9 +103,9 @@
     <script src="src/Icon.Label.Default.js"></script>
     <script>
         var map = L.map('map').setView([30.354086618820002, 30.9578856290658], 3);
-        L.tileLayer('worldmap/{z}/{x}/{y}.png', {
-            maxZoom: 7,
-            minZoom: 3,
+        L.tileLayer('iran/{z}/{x}/{y}.jpg', {
+            maxZoom: 8,
+            minZoom: 0,
             tileSize: 512,
             zoomOffset: -1
         }).addTo(map);
@@ -133,25 +133,25 @@
 
         var markers_icon = new Icons_2 ({ iconUrl: 'Marker/marker-icon-2x.png' });
         L.marker([37.533, 45.038], { icon: markers_icon }).addTo(map)
-            .bindPopup("<b>ORUMIEH</b><br />IRAN.").openPopup(); //TESTMARKERS FOR THE REHEARSAL
+            .bindPopup("<b>ORUMIEH</b><br><br />IRAN<a href = 'lookup.php'>pagina</a>").openPopup(); //TESTMARKERS FOR THE REHEARSAL
         L.marker([37.467,49.467], { icon: markers_icon }).addTo(map)
-            .bindPopup("<b>ANZALI</b><br />IRAN2.").openPopup();
+            .bindPopup("<b>ANZALI</b><br />IRAN2<a href = 'lookup.php'>pagina</a>").openPopup();
         L.marker([37.2,49.633,37], { icon: markers_icon }).addTo(map)
-             .bindPopup("<b>RASHT</b><br />IRAN2.").openPopup();
+             .bindPopup("<b>RASHT</b><br />IRAN2<a href = 'lookup.php'>pagina</a>").openPopup();
         L.marker([36.683,48.483], { icon: markers_icon }).addTo(map)
-             .bindPopup("<b>ZANJAN</b><br />IRAN2.").openPopup();
+             .bindPopup("<b>ZANJAN</b><br />IRAN2<a href = 'lookup.php'>pagina</a>").openPopup();
         L.marker([35.4,51.15,], { icon: markers_icon }).addTo(map)
-             .bindPopup("<b>IMAM KHOMENI</b><br />IRAN2.").openPopup();
+             .bindPopup("<b>IMAM KHOMENI</b><br />IRAN2<a href = 'lookup.php'>pagina</a>").openPopup();
         L.marker([36.25,50], { icon: markers_icon }).addTo(map)
-             .bindPopup("<b>GHAZVIN</b><br />IRAN.").openPopup();
+             .bindPopup("<b>GHAZVIN</b><br />IRAN<a href = 'lookup.php'>pagina</a>").openPopup();
         L.marker([36.9,50.667], { icon: markers_icon }).addTo(map)
-             .bindPopup("<b>RAMSAR</b><br />IRAN2.").openPopup();
+             .bindPopup("<b>RAMSAR</b><br />IRAN2<a href = 'lookup.php'>pagina</a>").openPopup();
         L.marker([35.4,51.15,101], { icon: markers_icon }).addTo(map)
-             .bindPopup("<b>NOSHAHR</b><br />IRAN2.").openPopup();
+             .bindPopup("<b>NOSHAHR</b><br />IRAN2<a href = 'lookup.php'>pagina</a>").openPopup();
         L.marker([36.717,52.65], { icon: markers_icon }).addTo(map)
-             .bindPopup("<b>BABULSAR</b><br />IRAN2.").openPopup();
+             .bindPopup("<b>BABULSAR</b><br />IRAN2<a href = 'lookup.php'>pagina</a>").openPopup();
         L.marker([36.417,54.95], { icon: markers_icon }).addTo(map)
-             .bindPopup("<b>SHAHRUD</b><br />IRAN2.").openPopup();
+             .bindPopup("<b>SHAHRUD</b><br />IRAN2<a href = 'lookup.php'>pagina</a>").openPopup();
 
 
     </script>
