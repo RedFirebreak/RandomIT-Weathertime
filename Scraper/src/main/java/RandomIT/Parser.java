@@ -41,7 +41,7 @@ class Parser implements Runnable {
       
       //Load all valid stations
       ArrayList<String> validStationNumbers = new ArrayList<String>();
-      try (Scanner scanner = new Scanner(new File("Scraper/station_country_data.dat"))) {
+      try (Scanner scanner = new Scanner(new File("./station_country_data.dat"))) {
          while(scanner.hasNextLine()) {
             validStationNumbers.add(scanner.nextLine().replaceAll("[^0-9]", "")); //only get the numbers of this file
          }
