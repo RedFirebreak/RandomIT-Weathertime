@@ -30,7 +30,7 @@
     //Integer data
     $retrievedDataTemperature = retrieveData($_GET['id'], 1, 'Temperature');
     $retrievedDataDewPoint = retrieveData($_GET['id'], 1, 'DewPoint');
-    $retrievedDataPercipation = retrieveData($_GET['id'], 1, 'Percipation');
+    $retrievedDataPercipitation = retrieveData($_GET['id'], 1, 'Percipitation');
     $retrievedDataSnowDrop = retrieveData($_GET['id'], 1, 'SnowDrop');
     $retrievedDataWindspeed = retrieveData($_GET['id'], 1, 'Windspeed');
     $retrievedDataWindDirection = retrieveData($_GET['id'], 1, 'WindDirection');
@@ -53,7 +53,7 @@
         //Integer data
         var passedDataArrayTemperature =  <?php echo '["' . implode('", "', $retrievedDataTemperature) . '"]'; ?>; 
         var passedDataArrayDewPoint =  <?php echo '["' . implode('", "', $retrievedDataDewPoiny) . '"]'; ?>; 
-        var passedDataArrayPercipation =  <?php echo '["' . implode('", "', $retrievedDataPercipation) . '"]'; ?>; 
+        var passedDataArrayPercipitation =  <?php echo '["' . implode('", "', $retrievedDataPercipitation) . '"]'; ?>; 
         var passedDataArraySnowdrop =  <?php echo '["' . implode('", "', $retrievedDataSnowDrop) . '"]'; ?>; 
         var passedDataArrayWindspeed =  <?php echo '["' . implode('", "', $retrievedDataWindspeed) . '"]'; ?>; 
         var passedDataArrayWindDirection =  <?php echo '["' . implode('", "', $retrievedDataWindDirection) . '"]'; ?>; 
