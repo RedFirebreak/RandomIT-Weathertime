@@ -4,21 +4,38 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This class filters the data for the clients
+ * It is easily expandable for more clients
+ * The filtered data will be stored so the DataStorage can do its thing
+ * 
+ * @author Romano Braxhoofden (405380)
+ * @version 1.3
+ */
 class Filter implements Runnable {
    private Thread t;
    private String threadName;
    
+   /**
+    * Constructor
+    * 
+    * @param name The name for the thread
+    */
    Filter(String name) {
       threadName = name;
       System.out.println("[FILTER] Creating and starting " + threadName);
    }
    
-   // Runs the thread, insert code here to be run.
+   /**
+    * Runs the thread 
+    * Does the actual filtering on the validated data
+    */
+   @Override
    public synchronized void run() {
       System.out.println("[FILTER] Running " +  threadName);
       ArrayList<String> stationListClient1 = new ArrayList<String>();
 
-      //Countries'stations neighbouring Iran + Iran.
+      //Stations in Iran and all neighbouring countries
       stationListClient1.add("375750"); //Azerbaijan
       stationListClient1.add("378630");
       stationListClient1.add("378635");
@@ -203,34 +220,35 @@ class Filter implements Runnable {
       stationListClient1.add("173750");
       stationListClient1.add("691464");
 
-      //Countries' station located in the Pacific
-      ArrayList<String> pacificstationListClient1 = new ArrayList<String>();
-      pacificstationListClient1.add("702759"); //Palau
-      pacificstationListClient1.add("914080");
+      //Pacific ocean stations
+      ArrayList<String> pacificStationListClient1 = new ArrayList<String>();
+      pacificStationListClient1.add("702759"); //Palau
+      pacificStationListClient1.add("914080");
 
-      pacificstationListClient1.add("749316"); //Marshall Islands
-      pacificstationListClient1.add("912500");
-      pacificstationListClient1.add("913660");
-      pacificstationListClient1.add("913760");
+      pacificStationListClient1.add("749316"); //Marshall Islands
+      pacificStationListClient1.add("912500");
+      pacificStationListClient1.add("913660");
+      pacificStationListClient1.add("913760");
 
-      pacificstationListClient1.add("912120"); //Guam
-      pacificstationListClient1.add("912180");
+      pacificStationListClient1.add("912120"); //Guam
+      pacificStationListClient1.add("912180");
 
-      pacificstationListClient1.add("912210"); //Mariana Islands
-      pacificstationListClient1.add("912320");
-      pacificstationListClient1.add("912333");
+      pacificStationListClient1.add("912210"); //Mariana Islands
+      pacificStationListClient1.add("912320");
+      pacificStationListClient1.add("912333");
 
-      pacificstationListClient1.add("912450"); //Wake Island
+      pacificStationListClient1.add("912450"); //Wake Island
 
-      pacificstationListClient1.add("913340"); //Micronesia
-      pacificstationListClient1.add("913480");
-      pacificstationListClient1.add("913481");
-      pacificstationListClient1.add("913691");
-      pacificstationListClient1.add("914130");
+      pacificStationListClient1.add("913340"); //Micronesia
+      pacificStationListClient1.add("913480");
+      pacificStationListClient1.add("913481");
+      pacificStationListClient1.add("913691");
+      pacificStationListClient1.add("914130");
 
-      pacificstationListClient1.add("916100"); //Kiribati
+      pacificStationListClient1.add("916100"); //Kiribati
 
-      //Infinite loop 
+      //Infinite loop to keep the thread alive
+      //Checks if the data needs to be linked to certain clients
       while (true) {
          int queueAmount = Run.validinput.size();
          if (queueAmount > 0) {
@@ -240,7 +258,7 @@ class Filter implements Runnable {
             //Hashmap containing valid data
             HashMap<String, String> hashmap = Run.validinput.poll();
 
-            //Filter for Iran's neighbouring countries
+            //Filter for Iran and neighbouring countries
             try {
                if (stationListClient1.contains(hashmap.get("StationNumber"))) {
                   //Filtered data required by client comes through. Add client name to list
@@ -250,12 +268,12 @@ class Filter implements Runnable {
                //e.printStackTrace();
             }
 
-            //Filter for clients requirements of data from Pacific stations
+            //Filter for Pacific ocean stations
             try {
-               if (pacificstationListClient1.contains(hashmap.get("StationNumber"))) {
+               if (pacificStationListClient1.contains(hashmap.get("StationNumber"))) {
                   String temperature = hashmap.get("Temperature");
 
-                  if (temperature.equals("MISSING")) {
+                  if (!temperature.equals("MISSING")) {
                      Double temp = Double.parseDouble(temperature);
 
                      if (temp >= 0 || temp <= 10) {
@@ -281,7 +299,9 @@ class Filter implements Runnable {
       }
    }
 
-   //Starts the thread
+   /**
+    * Starts the thread
+    */
    public void start() {
       System.out.println("[FILTER] Starting " +  threadName);
       if (t == null) {

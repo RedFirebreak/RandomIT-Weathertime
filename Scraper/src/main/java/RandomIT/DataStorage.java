@@ -6,47 +6,64 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
 
+/**
+ * Stores the validated and filtered data into .json files
+ * The files are stored in ./data and are sorted per client
+ * 
+ * @author Stefan Jilderda (406347)
+ * @version 1.1
+ */
 class DataStorage implements Runnable {
    private Thread t;
    private String threadName;
    private static FileWriter file;
 
+   /**
+    * Constructor
+    * 
+    * @param name The name for the thread
+    */
    DataStorage(String name) {
       threadName = name;
       System.out.println("[DATASTORAGE] Creating and starting " +  threadName);
    }
    
-   //Runs the thread, insert code here to be run
+   /**
+    * Runs the thread 
+    * Gives the data a timestamp and stores it in ./data
+    * Filename is "stationnumber - timestamp.json"
+    */
+   @Override
    public synchronized void run() {
       System.out.println("[DATASTORAGE] Running " + threadName);
-      //Infinite loop
+      //Infinite loop to keep the thread alive
       while (true) {
          int queueAmount = Run.filteredinput.size();
          if (queueAmount > 0) {
-            //Get a hashmap from the list
-            HashMap<String, String> hashmap = Run.filteredinput.poll();
+            //Get a hashMap from the list
+            HashMap<String, String> hashMap = Run.filteredinput.poll();
 
             long timestamp = System.currentTimeMillis();
             String stationID = "INVALID";
 
             //Get the required variables
             try {
-               stationID = hashmap.get("StationNumber");
+               stationID = hashMap.get("StationNumber");
             } catch (Exception e) {  
                //e.printStackTrace();
             }
 
-            //Add a current timestamp of processing for saving the date
+            //Add a timestamp
             try {
-               hashmap.put("Timestamp", String.valueOf(timestamp));
+               hashMap.put("Timestamp", String.valueOf(timestamp));
             } catch (Exception e) {
                //e.printStackTrace();
             }
 
-            //Turn the hashmap into JSON 
+            //Turn the hashMap into .json 
             JSONObject json = new JSONObject();
             try {
-               json.putAll(hashmap);
+               json.putAll(hashMap);
             } catch (Exception e) {
                //e.printStackTrace();
             }
@@ -74,12 +91,12 @@ class DataStorage implements Runnable {
             }
 
             try {
-               if (hashmap.get("Client").equals("")) {
+               if (hashMap.get("Client").equals("")) {
                   //No extra data saving is required
                } else { //Save the json in the client-folder aswell
 
                   //Remove [] and all special chars from string 
-                  String rawclients = hashmap.get("Client").replaceAll("[^a-zA-Z, ]", "");
+                  String rawclients = hashMap.get("Client").replaceAll("[^a-zA-Z, ]", "");
 
                   //Split into array from different clients
                   String[] clients = rawclients.split(", ");
@@ -115,7 +132,9 @@ class DataStorage implements Runnable {
       }
    }
    
-   //Starts the thread
+   /**
+    * Starts the thread
+    */
    public void start() {
       System.out.println("[DATASTORAGE] Starting " +  threadName);
       if (t == null) {
