@@ -17,6 +17,7 @@ class DataStorage implements Runnable {
    private Thread t;
    private String threadName;
    private static FileWriter file;
+   private String defaultstoragelocation = "./weatherdata/"; // Please include a trailing slash
 
    /**
     * Constructor
@@ -71,13 +72,13 @@ class DataStorage implements Runnable {
             //Save the json in the main data file
             try {
                //Make sure the directory is created
-               File directory = new File("../data/");
+               File directory = new File(defaultstoragelocation);
                if (!directory.exists()) {
                   directory.mkdir();
                }
 
                //Constructs a FileWriter given a file name, using the platform's default charset
-               file = new FileWriter("../data/" + stationID + "-" + timestamp + ".json");
+               file = new FileWriter(defaultstoragelocation + stationID + "-" + timestamp + ".json");
                file.write(json.toJSONString());
             } catch (Exception e) {
                   //e.printStackTrace();
@@ -104,14 +105,14 @@ class DataStorage implements Runnable {
                   //Walk trough the array
                   for (String clientname : clients) {
                      //Make sure the directory is created
-                     File directory = new File("../data/" + clientname);
+                     File directory = new File(defaultstoragelocation + clientname);
                      if (!directory.exists()) {
                         directory.mkdir();
                      }
 
                      try {
                         //Constructs a FileWriter given a file name, using the platform's default charset
-                        file = new FileWriter("../data/" + clientname + "/" + stationID + "-" + timestamp + ".json");
+                        file = new FileWriter(defaultstoragelocation + clientname + "/" + stationID + "-" + timestamp + ".json");
                         file.write(json.toJSONString());
                      } catch (IOException e) {
                            //e.printStackTrace();

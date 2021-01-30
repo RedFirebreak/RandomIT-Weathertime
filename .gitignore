@@ -4,6 +4,8 @@ web/src/config.php
 
 #leave the data files at home please
 data/*
+weatherdata/*
+Scraper/weatherdata/*
 
 # Package Files #
 web/src/logs/*.log
