@@ -69,28 +69,33 @@ class DataStorage implements Runnable {
                //e.printStackTrace();
             }
 
-            //Save the json in the main data file
-            try {
-               //Make sure the directory is created
-               File directory = new File(defaultstoragelocation);
-               if (!directory.exists()) {
-                  directory.mkdir();
-               }
+            // Save (all) data if the queue is not too big
+            // try {
+            //    if (queueAmount < 160000) { 
+            //       //Make sure the directory is created
+            //       File directory = new File(defaultstoragelocation);
+            //       if (!directory.exists()) {
+            //          directory.mkdir();
+            //       }
 
-               //Constructs a FileWriter given a file name, using the platform's default charset
-               file = new FileWriter(defaultstoragelocation + stationID + "-" + timestamp + ".json");
-               file.write(json.toJSONString());
-            } catch (Exception e) {
-                  //e.printStackTrace();
-            } finally {
-               try {
-                  file.flush();
-                  //file.close();
-               } catch (Exception e) {
-                  //e.printStackTrace();
-               }
-            }
+            //       //Constructs a FileWriter given a file name, using the platform's default charset
+            //       file = new FileWriter(defaultstoragelocation + stationID + "-" + timestamp + ".json");
+            //       file.write(json.toJSONString());
+            //    }
+            // } catch (Exception e) {
+            //       //e.printStackTrace();
+            // } finally {
+            //    try {
+            //       if (queueAmount < 160000) { 
+            //          file.flush();
+            //          //file.close();
+            //       }
+            //    } catch (Exception e) {
+            //       //e.printStackTrace();
+            //    }
+            // }
 
+            // Save ALL client data
             try {
                if (hashMap.get("Client").equals("")) {
                   //No extra data saving is required

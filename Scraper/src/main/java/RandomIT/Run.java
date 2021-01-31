@@ -3,6 +3,7 @@ package RandomIT;
 import java.util.Queue;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class will start threads and multithreading
@@ -41,5 +42,16 @@ public class Run {
     parser.start();
     filter.start();
     datastorage1.start();
+
+    while (true) {
+      try { 
+        TimeUnit.SECONDS.sleep(1);
+      } catch (Exception e) {
+        
+      }
+      System.out.println("Rawinput size: " + rawinput.size());
+      System.out.println("Validinput size: " + validinput.size());
+      System.out.println("Filteredinput size: " + filteredinput.size());
+    }
   }
 }

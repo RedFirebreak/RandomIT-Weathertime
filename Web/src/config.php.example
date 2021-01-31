@@ -3,17 +3,20 @@
     $config = array();
 
     // Used for pathing (and development)
-    $config['sitepath']         = "http://randomit.localhost/"; 
+    $config['sitepath']         = "http://localhost/"; 
 
     // Logo path, leave default for default logo
     $config['logopath']         = "/src/img/logo.png";
 
     // Database configuration settings for MySQL instance
-        $config['mysql']['hostname']  = "";
-        $config['mysql']['username']  = "";
-        $config['mysql']['password']  = "";
-        $config['mysql']['database']  = "";
-        $config['mysql']['port']      = "";
+    $config['mysql']['hostname']  = "localhost";
+    $config['mysql']['username']  = "root";
+    $config['mysql']['password']  = "";
+    $config['mysql']['database']  = "";
+    $config['mysql']['port']      = "3306";
+
+    // JSON file directory
+    $config['jsondir'] = "../weatherdata/UniversityTeheran/"; // Include a trailing slash!
     
     // Site customisation
     $config['sitetile'] = "RandomIT development site";

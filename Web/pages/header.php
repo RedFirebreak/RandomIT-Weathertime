@@ -25,6 +25,14 @@ $SITE = $config['sitepath'];
 // Load all functions
 require "$ROOTPATH/src/functions.php";
 
+// Define DIR for json files
+$DIR = "./UniversityTeheran/";
+
+$DIR = $config['jsondir'];
+
+// Production DIR
+//$DIR = '../weatherdata/UniversityTeheran/';
+
 // Connect to the database
 $dbConnection = databaseConnect();
 
@@ -66,14 +74,11 @@ if ($_SESSION['loggedin'] == true && $SESSIONSTATUS == 2) {
 <link rel="shortcut icon" href="<?php echo $config['logopath'] ?>" type="image/x-icon" />
 
 <!-- Bootstrap -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="<?php echo $SITE; ?>src/css/bootstrap.css">
+
 
 <!-- Default stylesheet -->
 <link rel="stylesheet" type="text/css" href="<?php echo $SITE; ?>src/css/stylesheet.css">
 
-<!-- CookieBanner -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css">
-
 <!-- Jquery -->
-<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<script src="<?php echo $SITE; ?>src/js/jquery.js"></script>
