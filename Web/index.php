@@ -80,11 +80,11 @@
     }
     </style>
 
-        /*
+        <!--
                 The map displayed on the index page used to display the markers for the individual stations.
                 @author Teun de Jong
 
-        */
+        -->
 
     <div id="map" style="width: 100%; height: 100%"></div>
     <link rel="stylesheet" href="./src/css/walid.css" />
