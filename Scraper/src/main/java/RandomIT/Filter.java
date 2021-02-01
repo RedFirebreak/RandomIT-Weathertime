@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
  * It is easily expandable for more clients
  * The filtered data will be stored so the DataStorage can do its thing
  * 
- * @author Romano Braxhoofden (405380)
+ * @author Romano Braxhoofden (405380) & Stefan Kuppen (405611)
  * @version 1.3
  */
 class Filter implements Runnable {
@@ -240,13 +240,112 @@ class Filter implements Runnable {
 
       pacificStationListClient1.add("912450"); //Wake Island
 
+      pacificStationListClient1.add("912180"); //Johnson Atoll
+
       pacificStationListClient1.add("913340"); //Micronesia
       pacificStationListClient1.add("913480");
       pacificStationListClient1.add("913481");
       pacificStationListClient1.add("913691");
       pacificStationListClient1.add("914130");
 
+      pacificStationListClient1.add("915170"); //Solomon Islands
+      pacificStationListClient1.add("915200");
+
+      pacificStationListClient1.add("915510"); //Vanuatu
+      pacificStationListClient1.add("915540");
+      pacificStationListClient1.add("915550");
+      pacificStationListClient1.add("915570");
+      pacificStationListClient1.add("915580");
+      pacificStationListClient1.add("915620");
+      pacificStationListClient1.add("915650");
+      pacificStationListClient1.add("915680");
+
+      pacificStationListClient1.add("915770"); //New Caledonia
+      pacificStationListClient1.add("915820");
+      pacificStationListClient1.add("915900");
+      pacificStationListClient1.add("915915");
+      pacificStationListClient1.add("915920");
+
+      pacificStationListClient1.add("916500"); //Fiji
+      pacificStationListClient1.add("916520");
+      pacificStationListClient1.add("916590");
+      pacificStationListClient1.add("916600");
+      pacificStationListClient1.add("916700");
+      pacificStationListClient1.add("916800");
+      pacificStationListClient1.add("916830");
+      pacificStationListClient1.add("916910");
+      pacificStationListClient1.add("916930");
+      pacificStationListClient1.add("916970");
+      pacificStationListClient1.add("916990");
+
+      pacificStationListClient1.add("917000"); //Canton Island
+      
+      pacificStationListClient1.add("917530"); //Wallis and Fortuna
+      pacificStationListClient1.add("917540");
+
+      pacificStationListClient1.add("917590"); //Western Samoa
+
+      pacificStationListClient1.add("917650"); //American Samoa
+      
+      pacificStationListClient1.add("917800"); //Tonga
+      pacificStationListClient1.add("917840");
+      pacificStationListClient1.add("917880");
+      pacificStationListClient1.add("917920");
+      
+      pacificStationListClient1.add("918000"); //Cook Islands
+      pacificStationListClient1.add("918040");
+      pacificStationListClient1.add("918110");
+      pacificStationListClient1.add("918260");
+      pacificStationListClient1.add("918300");
+      pacificStationListClient1.add("918400");
+      pacificStationListClient1.add("918430");
+      pacificStationListClient1.add("918470");
+
+      pacificStationListClient1.add("919250"); //French Polynesia
+      pacificStationListClient1.add("919300");
+      pacificStationListClient1.add("919380");
+      pacificStationListClient1.add("919410");
+      pacificStationListClient1.add("919430");
+      pacificStationListClient1.add("919440");
+      pacificStationListClient1.add("919480");
+      pacificStationListClient1.add("919520");
+      pacificStationListClient1.add("919540");
+      pacificStationListClient1.add("919580");
+      pacificStationListClient1.add("920350");
+
+      pacificStationListClient1.add("920350"); //Papua New Guinea
+      pacificStationListClient1.add("940140");
+      pacificStationListClient1.add("940270");
+      pacificStationListClient1.add("940350");
+      pacificStationListClient1.add("940850");
+
+      pacificStationListClient1.add("910660"); //Midway Islands
+      
+      pacificStationListClient1.add("949960"); //Norfolk Island
+
       pacificStationListClient1.add("916100"); //Kiribati
+
+      pacificStationListClient1.add("916430"); //Tuvalu
+
+      pacificStationListClient1.add("914900"); //Christmas Island Kiribati
+
+      pacificStationListClient1.add("911170"); //United States (Hawaii)
+      pacificStationListClient1.add("911620");
+      pacificStationListClient1.add("911650");
+      pacificStationListClient1.add("911681");
+      pacificStationListClient1.add("911690");
+      pacificStationListClient1.add("911700");
+      pacificStationListClient1.add("911760");
+      pacificStationListClient1.add("911780");
+      pacificStationListClient1.add("911800");
+      pacificStationListClient1.add("911820");
+      pacificStationListClient1.add("911840");
+      pacificStationListClient1.add("911860");
+      pacificStationListClient1.add("911900");
+      pacificStationListClient1.add("911903");
+      pacificStationListClient1.add("911904");
+      pacificStationListClient1.add("911905");
+      pacificStationListClient1.add("911975");
 
       //Infinite loop to keep the thread alive
       //Checks if the data needs to be linked to certain clients
