@@ -37,8 +37,11 @@ class ClientThread extends Thread {
         line = in.readLine();
         out += (line + "\n");
         if (line.equals("</WEATHERDATA>")) {
-          Run.rawinput.add(out);
-          out = "";
+          // Make sure the queue is not backed up. Otherwise ignore the requests
+          if (Run.rawinput.size() < 16000) {
+            Run.rawinput.add(out);
+            out = "";
+          }
         }
       }
     } catch (Exception e) { 

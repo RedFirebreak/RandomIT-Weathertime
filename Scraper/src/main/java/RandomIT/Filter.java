@@ -3,6 +3,7 @@ package RandomIT;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class filters the data for the clients
@@ -250,8 +251,8 @@ class Filter implements Runnable {
       //Infinite loop to keep the thread alive
       //Checks if the data needs to be linked to certain clients
       while (true) {
-         int queueAmount = Run.validinput.size();
-         if (queueAmount > 0) {
+         // If there's something in the queue and the filtered input is not backed up
+         if (Run.validinput.size() > 0 && Run.filteredinput.size() < 16000 ) {
             //Make list for clients
             List<String> clientlist = new ArrayList<String>();
 
@@ -295,6 +296,11 @@ class Filter implements Runnable {
 
             //Submit filtered data
             Run.filteredinput.add(hashmap);
+         } else {
+            // Queue is empty or filtered input is backed up. Wait a second and try again
+            try { 
+               TimeUnit.SECONDS.sleep(1);
+             } catch (Exception e) {  }
          }
       }
    }
