@@ -13,12 +13,14 @@
             padding-left: 10px;
             border: 1px solid black;
         }
+
         td, tr {
             text-align: left;
             padding-right: 10px;
             padding-left: 1%;
             border: 1px solid black;
         }
+
         h3 {
             color: black;
         }
@@ -48,14 +50,20 @@ if (isset($_GET['id'])) {
             array_push($tempResult, $row["name"], $row["country"]);
         }
     }
-} else {
-    echo "NO ID SET";
 }
 ?>
 
 <?php
+
 $DIR = '../weatherdata/';
+
 $jsonArray = [];
+
+$tableHeaders = ["Storm", "Temperature", "Air Pressure", "Snow", "Windspeed", "Cloud Coverage", "Dew Point", "Rain",
+    "Precipitation", "Snow Drop", "SeaLevelPressure", "Visibility", "Tornado", "WindDirection", "Freeze", "Hail"];
+
+$dataTypes = ["", "°C", "mbar", "", "km/h", "%", "", "°C", "", "", "", "cm", "cm", "", "mbar", "km", "", "°", "", "", ""];
+
 $relevantStations = [375750, 378630, 378635, 378640, 379070, 379850, 381412, 403560, 403570, 403584, 403600, 403610,
     403620, 403720, 403730, 403750, 403770, 403940, 404050, 404150, 404160, 404170, 404200, 404300, 404370, 404380,
     404390, 404450, 404770, 404800, 404950, 404980, 404480, 404490, 404520, 411840, 411940, 411960, 411980, 412160,
@@ -70,47 +78,74 @@ $relevantStations = [375750, 378630, 378635, 378640, 379070, 379850, 381412, 403
     172340, 172370, 172400, 172410, 172440, 172480, 172500, 172600, 172700, 172720, 172734, 172800, 172900, 172920,
     172950, 173000, 173100, 173300, 173500, 173520, 173700, 173750, 691464];
 
-foreach($relevantStations as $id) {
-    if (!empty(retrieveJSONsPerStation($id, 7))) {
-        array_push($jsonArray,retrieveJSONsPerStation($id, 7));
-    }
-}
 
-
-
-
-echo '<div class="container h-100" style="min-width: 86%">
+echo '<div class="container h-100" style="min-width: 95%">
             <div class="row h-100 align-items-center">
                 <div class="col-12 whiteborder text-center">';
-echo "<div class='table-responsive'>";
+                echo "<h3 style='color:#ff00aa'>DEZE TOP 5 WORDT MEDE MOGELIJK GEMAAKT DOOR JE MOEDER!!!</h3>";
+                    echo "<div class='table-responsive'>";
 
 echo "<table class='table'>
-    <thead>";
+    <thead>
+    <th scope='col'> Station</th>
+    <th scope='col'> Date </th>";
 
-$slicesArray = [];
-
-foreach($jsonArray as $station) {
-    $temperatures = array_column($station, 'Temperature');
-    array_multisort($station, SORT_DESC, $temperatures);
-    foreach($station as $data) {
-        $slice = array_slice($station, 0, 5);
-        array_push($slicesArray);
-    }
-
+for ($i = 0; $i < sizeof($tableHeaders); $i++) {
+    echo "<th scope='col'>" . $tableHeaders[$i] . "</th>";
 }
-$top5 = [];
-foreach($slicesArray as $station) {
-    $temperatures = array_column($station, 'Temperature');
-    array_multisort($station, SORT_DESC, $temperatures);
-    foreach($station as $data) {
-        $slice = array_slice($station, 0, 5);
-        array_push($top5, $slice);
+echo "</thead>";
+
+
+foreach ($relevantStations as $id) {
+    if (!empty(retrieveJSONsPerStation($id, 7))) {
+        $tempArray = retrieveJSONsPerStation($id, 7);
+        $temperatures = array_column($tempArray, 'Temperature');
+        array_multisort($tempArray, SORT_DESC, $temperatures);
+        array_push($jsonArray, (array_slice($tempArray, 0, 1)[0]));
     }
 }
-foreach($top5 as $station) {
-    print_r($station);
+
+$temperatures = array_column($jsonArray, 'Temperature');
+array_multisort($jsonArray, SORT_DESC, $temperatures);
+$top5 = array_slice($jsonArray, 0, 5);
+
+$conn = databaseConnect();
+if ($conn->connect_error) {
+    die("Database connection failed! " . $conn->connect_error);
+}
+echo "<tbody>";
+foreach ($top5 as $winnaar) {
+    $id = $winnaar['StationNumber'];
+    $sql = "SELECT name, country FROM stations WHERE stn = '$id'";
+    $result = $conn->query($sql);
+
+    $tempResult = [];
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while ($row = $result->fetch_assoc()) {
+            array_push($tempResult, $row["name"], $row["country"]);
+        }
+    }
+    echo "<tr>
+        <td style='text-align: center'>{$winnaar['StationNumber']}<br>{$tempResult[0]},<br>{$tempResult[1]}</td>
+        <td style='text-align: center'>{$winnaar['Date']}<br>{$winnaar['Time']}</td> 
+        ";
+
+    $i = 0;
+    foreach ($winnaar as $line) {
+        if (!($line == $winnaar['Time'] or $line == $winnaar['Client'] or $line == $winnaar['StationNumber']
+            or $line == $winnaar['Timestamp'] or $line == $winnaar['Date'])) {
+            if ($line == 'false') $line = 'No';
+            if ($line == 'true') $line = 'Yes';
+            echo "<td>" . $line . "{$dataTypes[$i]}" . "</td>";
+        }
+        $i++;
+        next($winnaar);
+    }
 }
 
+echo "</tr>
+      </tbody>";
 echo '</table>
                 </div>
             </div>
