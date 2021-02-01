@@ -7,21 +7,25 @@
 
     <title>RandomIT - Lookup</title>
     <style>
-        table, th {
-            text-align: center;
-            padding-right: 10px;
-            padding-left: 10px;
-            border: 1px solid black;
-        }
-        td, tr {
-            text-align: left;
-            padding-right: 10px;
-            padding-left: 1%;
-            border: 1px solid black;
-        }
-        h3 {
-            color: black;
-        }
+    table,
+    th {
+        text-align: center;
+        padding-right: 10px;
+        padding-left: 10px;
+        border: 1px solid black;
+    }
+
+    td,
+    tr {
+        text-align: left;
+        padding-right: 10px;
+        padding-left: 1%;
+        border: 1px solid black;
+    }
+
+    h3 {
+        color: black;
+    }
     </style>
 </head>
 
@@ -32,7 +36,7 @@
     require "$ROOTPATH/pages/navigation.php";
 
     if (isset($_GET['id'])) {
-        $id = $_GET['id'];
+        $id = cleanUserInput($_GET['id']);
 
         $conn = databaseConnect();
 
@@ -61,13 +65,13 @@
 
     $dataTypes = ["", "°C", "mbar", "", "km/h", "%", "", "°C", "", "", "", "cm", "cm", "", "mbar", "km", "", "°", "", "", ""];
 
-    $JSONfiles = retrieveJsonsPerStation($_GET['id'], 7 );
-
+    $JSONfiles = retrieveJsonsPerStation($id, 7 );
 
     echo '<div class="container h-100" style="min-width: 86%">
             <div class="row h-100 align-items-center">
                 <div class="col-12 whiteborder text-center">';
                 echo "<h3 style='color:#ff00aa'>" . $id . " " . $tempResult[0] . ", " . $tempResult[1] . "</h3>";
+                echo "<a href='xml.php?id=". $id ."' class='btn btn-danger' target='_blank'>Download XML</a>";
                     echo "<div class='table-responsive'>";
 
     echo "<table class='table'>

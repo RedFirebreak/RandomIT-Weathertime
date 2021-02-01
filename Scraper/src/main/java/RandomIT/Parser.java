@@ -51,9 +51,8 @@ class Parser implements Runnable {
 
       //Infinite loop to keep the thread alive
       while (true) {
-         int queueAmount = Run.rawinput.size();
-         HashMap<String, String> returnHash = new HashMap<String, String>();
-         if (queueAmount > 0) {
+         if (Run.rawinput.size() > 0 && Run.filteredinput.size() < 160000) {
+            HashMap<String, String> returnHash = new HashMap<String, String>();
             try {
                String xmlString = Run.rawinput.poll();
                if (xmlString.contains("<MEASUREMENT>")) {

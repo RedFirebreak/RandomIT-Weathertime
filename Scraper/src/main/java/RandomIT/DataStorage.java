@@ -19,6 +19,16 @@ class DataStorage implements Runnable {
    private static FileWriter file;
    private String defaultstoragelocation = "./weatherdata/"; // Please include a trailing slash
 
+   private int alldata_succeeded = 0;
+   private int alldata_discarded = 0;
+
+   private int data_forclient = 0;
+   private int data_succeeded = 0;
+
+   private int data_failed = 0;
+   private int data_failed_io = 0;
+   
+
    /**
     * Constructor
     * 
@@ -37,10 +47,17 @@ class DataStorage implements Runnable {
    @Override
    public synchronized void run() {
       System.out.println("[DATASTORAGE] Running " + threadName);
+
+      // Init: "all data" folder
+      File directory = new File(defaultstoragelocation);
+      if (!directory.exists()) {
+         directory.mkdir();
+      }
+
       //Infinite loop to keep the thread alive
       while (true) {
-         int queueAmount = Run.filteredinput.size();
-         if (queueAmount > 0) {
+         // If there is something in the queue, WORK!
+         if (Run.filteredinput.size() > 0) {
             //Get a hashMap from the list
             HashMap<String, String> hashMap = Run.filteredinput.poll();
 
@@ -69,70 +86,62 @@ class DataStorage implements Runnable {
                //e.printStackTrace();
             }
 
-            // Save (all) data if the queue is not too big
-            // try {
-            //    if (queueAmount < 160000) { 
-            //       //Make sure the directory is created
-            //       File directory = new File(defaultstoragelocation);
-            //       if (!directory.exists()) {
-            //          directory.mkdir();
-            //       }
-
-            //       //Constructs a FileWriter given a file name, using the platform's default charset
-            //       file = new FileWriter(defaultstoragelocation + stationID + "-" + timestamp + ".json");
-            //       file.write(json.toJSONString());
-            //    }
-            // } catch (Exception e) {
-            //       //e.printStackTrace();
-            // } finally {
-            //    try {
-            //       if (queueAmount < 160000) { 
-            //          file.flush();
-            //          //file.close();
-            //       }
-            //    } catch (Exception e) {
-            //       //e.printStackTrace();
-            //    }
-            // }
-
-            // Save ALL client data
+            // Fist, check if client data needs to be saved
             try {
-               if (hashMap.get("Client").equals("")) {
-                  //No extra data saving is required
-               } else { //Save the json in the client-folder aswell
+               if (stationID != "INVALID") {
+                  if (hashMap.get("Client").equals("[]")) {
+                     //No extra data saving is required
+                  } else { //Save the json in the client-folder aswell
+                     data_forclient = data_forclient + 1;
 
-                  //Remove [] and all special chars from string 
-                  String rawclients = hashMap.get("Client").replaceAll("[^a-zA-Z, ]", "");
+                     //Remove [] and all special chars from string 
+                     String rawclients = hashMap.get("Client").replaceAll("[^a-zA-Z, ]", "");
 
-                  //Split into array from different clients
-                  String[] clients = rawclients.split(", ");
+                     //Split into array from different clients
+                     String[] clients = rawclients.split(", ");
 
-                  //Walk trough the array
-                  for (String clientname : clients) {
-                     //Make sure the directory is created
-                     File directory = new File(defaultstoragelocation + clientname);
-                     if (!directory.exists()) {
-                        directory.mkdir();
-                     }
+                     //Walk trough the array
+                     for (String clientname : clients) {
+                        //Make sure the directory is created
+                        File directory1 = new File(defaultstoragelocation + clientname);
+                        if (!directory1.exists()) {
+                           directory1.mkdir();
+                        }
 
-                     try {
-                        //Constructs a FileWriter given a file name, using the platform's default charset
-                        file = new FileWriter(defaultstoragelocation + clientname + "/" + stationID + "-" + timestamp + ".json");
-                        file.write(json.toJSONString());
-                     } catch (IOException e) {
-                           //e.printStackTrace();
-                     } finally {
                         try {
+                           //Constructs a FileWriter given a file name, using the platform's default charset
+                           file = new FileWriter(defaultstoragelocation + clientname + "/" + stationID + "-" + timestamp + ".json");
+                           file.write(json.toJSONString());
                            file.flush();
-                           //file.close();
-                        } catch (Exception e) {
-                           //e.printStackTrace();
+                           data_succeeded = data_succeeded + 1;
+                        } catch (IOException e) {
+                              //e.printStackTrace();
+                              data_failed_io = data_failed_io + 1;
                         }
                      }
                   }
                }
             } catch (Exception e) {
                //e.printStackTrace();
+               data_failed = data_failed + 1;
+            }
+
+
+            // Then, Save (all) data if the queue is not too big (16000, 2 second worth of data not being worked on)
+             try {
+               if (stationID != "INVALID") {   
+                  if (Run.filteredinput.size() < 160000) { 
+                     // file (and directory) is made in the init of this class
+                     file = new FileWriter(defaultstoragelocation + stationID + "-" + timestamp + ".json");
+                     file.write(json.toJSONString());
+                     file.flush();
+                     alldata_succeeded = alldata_succeeded + 1;
+                  } else {
+                     alldata_discarded = alldata_discarded + 1;
+                  }
+               }
+            } catch (Exception e) {
+                  //e.printStackTrace(); 
             }
          }
       }
@@ -147,5 +156,9 @@ class DataStorage implements Runnable {
          t = new Thread(this, threadName);
          t.start();
       }
+   }
+
+   public String givestats() {
+      return "All succeeded " + alldata_succeeded + "| All discarded = " +  alldata_discarded + "| Data for client: " + data_forclient + "| clientdata succeeded: " + data_succeeded + "| Abandoned: " + data_failed + "| Abandoned IO: " + data_failed_io;
    }
 }
