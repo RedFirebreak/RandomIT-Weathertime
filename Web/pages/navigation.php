@@ -15,15 +15,24 @@
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
+
                 <?php if ($Loggedin) { ?>
 
+                <li class="nav-item active">
+                    <a class="nav-link" href="top5.php">Top 5 stations
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+
                 <li class="nav-item dropdown">
+
                     <a class="nav-link dropdown-toggle" href="#" id="account" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <img src="./src/img/defaultaccountimage.png" width="30" height="30"
                             class="rounded-circle d-inline-block align-top" alt="">
                         Welcome <?php echo $LoggedinUsername ?>
                     </a>
+
                     <div class="dropdown-menu" aria-labelledby="account">
 
                         <a style="color: black;" class="dropdown-item" href="change_password.php">

@@ -7,28 +7,30 @@
 
     <title>RandomIT - Lookup</title>
     <style>
-        table, th {
-            text-align: center;
-            padding-right: 10px;
-            padding-left: 10px;
-            border: 1px solid black;
-        }
+    table,
+    th {
+        text-align: center;
+        padding-right: 10px;
+        padding-left: 10px;
+        border: 1px solid black;
+    }
 
-        td, tr {
-            text-align: left;
-            padding-right: 10px;
-            padding-left: 1%;
-            border: 1px solid black;
-        }
+    td,
+    tr {
+        text-align: left;
+        padding-right: 10px;
+        padding-left: 1%;
+        border: 1px solid black;
+    }
 
-        h3 {
-            color: black;
-        }
+    h3 {
+        color: black;
+    }
     </style>
 </head>
 
 <body>
-<?php
+    <?php
 // if the user is logged in, send him to the dashboard!
 require "$ROOTPATH/pages/navigation.php";
 
@@ -53,9 +55,7 @@ if (isset($_GET['id'])) {
 }
 ?>
 
-<?php
-
-$DIR = '../weatherdata/';
+    <?php
 
 $jsonArray = [];
 
@@ -82,7 +82,7 @@ $relevantStations = [375750, 378630, 378635, 378640, 379070, 379850, 381412, 403
 echo '<div class="container h-100" style="min-width: 95%">
             <div class="row h-100 align-items-center">
                 <div class="col-12 whiteborder text-center">';
-                echo "<h3 style='color:#ff00aa'>DEZE TOP 5 WORDT MEDE MOGELIJK GEMAAKT DOOR JE MOEDER!!!</h3>";
+                echo "<h3 style='color:#ff00aa'>Top 5 of weather station (Based on peak temperature)</h3>";
                     echo "<div class='table-responsive'>";
 
 echo "<table class='table'>
