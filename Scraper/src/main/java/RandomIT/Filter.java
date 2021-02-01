@@ -3,7 +3,6 @@ package RandomIT;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This class filters the data for the clients
@@ -395,11 +394,6 @@ class Filter implements Runnable {
 
             //Submit filtered data
             Run.filteredinput.add(hashmap);
-         } else {
-            // Queue is empty or filtered input is backed up. Wait a second and try again
-            try { 
-               TimeUnit.SECONDS.sleep(1);
-             } catch (Exception e) {  }
          }
       }
    }

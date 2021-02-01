@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Scanner;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This class will parse all incoming raw data
@@ -52,7 +51,7 @@ class Parser implements Runnable {
 
       //Infinite loop to keep the thread alive
       while (true) {
-         if (Run.rawinput.size() > 0 && Run.validinput.size() < 16000) {
+         if (Run.rawinput.size() > 0 && Run.filteredinput.size() < 160000) {
             HashMap<String, String> returnHash = new HashMap<String, String>();
             try {
                String xmlString = Run.rawinput.poll();
@@ -217,11 +216,6 @@ class Parser implements Runnable {
             } catch (Exception e) { 
                //e.printStackTrace();  
             }
-         } else {
-            // Queue is empty or valid input is backed up. Wait a second and try again
-            try { 
-               TimeUnit.SECONDS.sleep(1);
-             } catch (Exception e) {  }
          }
       }
    }
