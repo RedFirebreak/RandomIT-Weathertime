@@ -353,26 +353,4 @@ function extrapolate($stationID, $days, $dataType){
     return $diff;
 }
 
-function extrapolateTrueFalse($stationID, $days, $dataType){
-    $counterTrue = 0;
-    $counterFalse = 0;
-    $JSONS = retrieveData($stationID, $days, $dataType);
-    foreach ($JSONS as $value){
-        if ($value == 'true'){
-            $counterTrue++;
-        }
-        else if ($value == 'MISSING'){
-        }
-        else {
-            $counterFalse++;
-        }
-    }
-    if ($counterTrue > $counterFalse) {
-        return 'true';
-    } else {
-        return 'false';
-    }
-
-}
-
 ?>
