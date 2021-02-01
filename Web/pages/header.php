@@ -1,16 +1,16 @@
 <?php
 function GetRootPath() {
-    global $config; // open config
+    global $config; //Open config
     $return = dirname(__FILE__);
     $return = str_replace ( "\pages" , "" , $return);
-    $return = str_replace ( "/pages" , "" , $return); // linux compatibility
-    return $return; // return
+    $return = str_replace ( "/pages" , "" , $return); //Linux compatibility
+    return $return;
 }
 
-// Define rootpath
+//Define rootpath
 $ROOTPATH = GetRootPath();
 
-// Load config file or display the instructions
+//Load config file or display the instructions
 if (file_exists("$ROOTPATH/src/config.php")) {
     require "$ROOTPATH/src/config.php";
 } else {
@@ -19,47 +19,47 @@ if (file_exists("$ROOTPATH/src/config.php")) {
     exit;
 }
 
-// Define SITE
+//Define SITE
 $SITE = $config['sitepath'];
 
-// Load all functions
+//Load all functions
 require "$ROOTPATH/src/functions.php";
 
-// Define DIR for json files
+//Define DIR for json files
 $DIR = "./UniversityTeheran/";
 
 $DIR = $config['jsondir'];
 
-// Production DIR
+//Production DIR
 //$DIR = '../weatherdata/UniversityTeheran/';
 
-// Connect to the database
+//Connect to the database
 $dbConnection = databaseConnect();
 
-// Start (or resume) a session for the current user
+//Start (or resume) a session for the current user
 session_start();
 
 
-// Logout from anywhere
+//Logout from anywhere
 if (isset($_GET['logout'])) {
     session_destroy();
 }
 
-// Check if user is logged in
+//Check if user is logged in
 if (!isset($_SESSION['loggedin'])) {
     $_SESSION['loggedin'] = false;
 }
 
-// Define logged in variables
+//Define logged in variables
 $SESSIONSTATUS = session_status();
 
-// Initialise the session so user variables can be used site-wide
+//Initialise the session so user variables can be used site-wide
 if ($_SESSION['loggedin'] == true && $SESSIONSTATUS == 2) {
     $Loggedin = $_SESSION['loggedin'];
     $LoggedinID = $_SESSION['id'];
     $LoggedinUsername = $_SESSION['name'];
 } else {
-    // User is not logged in
+    //User is not logged in
     $Loggedin = "";
     $LoggedinID = "";
     $LoggedinUsername = "";
