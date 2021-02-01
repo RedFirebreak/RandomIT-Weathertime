@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 
 <head>
 
@@ -23,30 +23,14 @@
 
 <body>
     <?php
-    function createMarkers(){ //FUNCTION TO READ AND CREATE THE MARKERS
+    function createMarkers(){ //Function to read and create the markers
     $dir = 'data';
     $files = scandir($dir, SCANDIR_SORT_ASCENDING);
 
-        // steps through every file in the dir
-        foreach($files as $file) {
-            echo $file;
-            $expl = explode('-', $file);
-            if (sizeof($expl) > 1) {
-                // bepaal welke data uit de afgelopen x dagen komt.
-                $time = round(intval($expl[1]) / 1000);
-                echo "poep";
-                //if ($time > $days * 86400) {
-                  //  $jsonFile = file_get_contents("data/" . $file);
-
-            }
-        }
-    }
-?>
-    <?php
-    // if the user is logged in, send him to the dashboard!
+    //If the user is logged in, send him to the dashboard!
     require "$ROOTPATH/pages/navigation.php";
     
-    if ($Loggedin == false) { ?>
+    if (!$Loggedin) { ?>
     <!-- Full Page Image Header with Vertically Centered Content -->
     <header class="masthead">
         <div class="container h-100">
@@ -58,14 +42,13 @@
                     <div class="homeloginbutton">
                         <a href="./login.php" class="border border-dark btn btn-primary">Log-in</a>
                     </div>
-
                     <br>
                 </div>
             </div>
         </div>
     </header>
     <?php
-    } elseif ($Loggedin == true) {
+    } elseif ($Loggedin) {
         // Show map for logged in users   
     ?>
     <style>
@@ -144,7 +127,7 @@
     var markersPoints = JSON.parse('<?php echo $s_to_json?>');
     var markersData = JSON.parse('<?php echo $d_to_json?>');
 
-    // alle markers aanmaken in de for loop
+    //Create all markers based on data in the client's folder
     for (i = 0; i < markersPoints.length; i++) {
         for(j = 0; j < markersData.length; j++) {
             if(markersPoints[i][1] == markersData[j]['StationNumber']) {
@@ -161,10 +144,8 @@
                                                         <tr> <td> <h6> <a href = 'lookup.php?id=${markersPoints[i][1]}'> More data </a> </h6> </td> \
                                                         </table> \
                                                         `);
-
             }
         }
-
     }
     </script>
 
@@ -177,7 +158,6 @@
     <?php
         require "./pages/footer.php";
     ?>
-
 </footer>
 
 </html>

@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 
 <head>
-
     <?php require "./pages/header.php" ?>
 
     <title>RandomIT - Lookup</title>
@@ -30,9 +29,8 @@
 </head>
 
 <body>
-
     <?php
-    // if the user is logged in, send him to the dashboard!
+    //If the user is logged in, send him to the dashboard!
     require "$ROOTPATH/pages/navigation.php";
 
     if (isset($_GET['id'])) {
@@ -48,7 +46,7 @@
 
         $tempResult = [];
         if ($result->num_rows > 0) {
-            // output data of each row
+            //Output data of each row
             while ($row = $result->fetch_assoc()) {
                 array_push($tempResult, $row["name"], $row["country"]);
             }
@@ -56,9 +54,11 @@
     } else {
         echo "NO ID SET";
     }
-    ?>
-
-    <?php
+    
+    //Redirect the user if they have not been logged in
+    if (!$Loggedin) {
+        header("location: index.php");
+    } else if ($Loggedin) {
 
     $tableHeaders = ["Storm", "Temperature", "Air Pressure", "Snow", "Windspeed", "Cloud Coverage", "Dew Point", "Rain",
         "Precipitation", "Snow Drop", "SeaLevelPressure", "Visibility", "Tornado", "WindDirection", "Freeze", "Hail"];
@@ -84,19 +84,20 @@
     echo "</thead>
     <tbody>";
 
+    //Loop through all JSON files and add them as table lines
     foreach($JSONfiles as $file) {
         echo "<tr>
         <td style='text-align: center'>{$file['Date']}<br>{$file['Time']}</td>";
 
         $i = 0;
         foreach($file as $line) {
-            //echo key($file);
-            if(!($line == $file['Time'] or $line == $file['Client'] or $line == $file['StationNumber']
-                or $line == $file['Timestamp'] or $line == $file['Date'])) {
+            if(!($line == $file['Time'] || $line == $file['Client'] or $line == $file['StationNumber'] || $line == $file['Timestamp'] || $line == $file['Date'])) {
 
-                if ($line == 'false') $line = 'No';
-                if ($line == 'true') $line = 'Yes';
-                if ($line == "MISSING") {
+                if ($line == 'false') { 
+                    $line = 'No';
+                } elseif ($line == 'true') { 
+                    $line = 'Yes'; 
+                } elseif ($line == "MISSING") {
                     $line = extrapolate($file['StationNumber'], 7, key($file));
                     echo "<td>" . $line . "{$dataTypes[$i]} </td>";
                 } else {
@@ -115,8 +116,7 @@
             </div>
             </div>
         </div>';
-
-
+    }
 ?>
 </body>
 
@@ -126,5 +126,4 @@
     ?>
 
 </footer>
-
 </html>
