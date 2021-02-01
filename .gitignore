@@ -14,7 +14,6 @@ web/src/logs/filtered/*.log
 # Package Files #
 *.zip
 *.tar.gz
-*.rar
 
 # Log files
 *.log
