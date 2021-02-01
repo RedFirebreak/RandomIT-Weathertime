@@ -32,8 +32,13 @@
 <body>
 
     <?php
+
+    /**
+     * @author Jens Maas
+     */
     // if the user is logged in, send him to the dashboard!
     require "$ROOTPATH/pages/navigation.php";
+
 
     if (isset($_GET['id'])) {
         $id = cleanUserInput($_GET['id']);
@@ -59,6 +64,10 @@
     ?>
 
     <?php
+    /**
+     * Arrays used to create table headers and data types in the table.
+     * @author Jens Maas
+     */
 
     $tableHeaders = ["Storm", "Temperature", "Air Pressure", "Snow", "Windspeed", "Cloud Coverage", "Dew Point", "Rain",
         "Precipitation", "Snow Drop", "SeaLevelPressure", "Visibility", "Tornado", "WindDirection", "Freeze", "Hail"];
@@ -74,6 +83,7 @@
                 echo "<a href='xml.php?id=". $id ."&days=7' class='btn btn-danger' target='_blank'>Download XML</a>";
                     echo "<div class='table-responsive'>";
 
+
     echo "<table class='table'>
     <thead>
     <th scope='col'> Date </th>";
@@ -84,13 +94,21 @@
     echo "</thead>
     <tbody>";
 
+    /*
+     * Loop through all JSON files
+     */
     foreach($JSONfiles as $file) {
         echo "<tr>
         <td style='text-align: center'>{$file['Date']}<br>{$file['Time']}</td>";
 
         $i = 0;
+        /*
+         * In each file create every table entry but skip 'Time', 'Client', 'StationNumber', 'Timestamp' and 'Date'.
+         * Replace the boolean values with 'Yes' or 'No'.
+         * If the data is missing, extrapolate.
+         *
+         */
         foreach($file as $line) {
-            //echo key($file);
             if(!($line == $file['Time'] or $line == $file['Client'] or $line == $file['StationNumber']
                 or $line == $file['Timestamp'] or $line == $file['Date'])) {
 
@@ -103,6 +121,7 @@
                     echo "<td>" . $line . "{$dataTypes[$i]} </td>";
                 }
             }
+            // increment the internal array counter so it's able to retrieve the correct key for extrapolation.
             $i++;
             next($file);
         }

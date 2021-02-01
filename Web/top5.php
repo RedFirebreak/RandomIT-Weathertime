@@ -31,9 +31,15 @@
 
 <body>
     <?php
+    /**
+     * Page that displays the top 5 stations based on peak temperature.
+     * @author Jens Maas
+     */
+
 // if the user is logged in, send him to the dashboard!
 require "$ROOTPATH/pages/navigation.php";
 
+// make db connection
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
@@ -57,12 +63,15 @@ if (isset($_GET['id'])) {
 
     <?php
 
+
 $jsonArray = [];
 
 $tableHeaders = ["Storm", "Temperature", "Air Pressure", "Snow", "Windspeed", "Cloud Coverage", "Dew Point", "Rain",
     "Precipitation", "Snow Drop", "SeaLevelPressure", "Visibility", "Tornado", "WindDirection", "Freeze", "Hail"];
 
 $dataTypes = ["", "°C", "mbar", "", "km/h", "%", "", "°C", "", "", "", "cm", "cm", "", "mbar", "km", "", "°", "", "", ""];
+
+//Stations that are relevant for the client and eligible to make the top 5.
 
 $relevantStations = [375750, 378630, 378635, 378640, 379070, 379850, 381412, 403560, 403570, 403584, 403600, 403610,
     403620, 403720, 403730, 403750, 403770, 403940, 404050, 404150, 404160, 404170, 404200, 404300, 404370, 404380,
@@ -95,7 +104,11 @@ for ($i = 0; $i < sizeof($tableHeaders); $i++) {
 }
 echo "</thead>";
 
-
+    /**
+     * For each relevant station all JSON files are loaded. retrieveJSONsPerStation returns an array,
+     * which is sorted based on the temperature values. The top value (and all other station data
+     * is then added to the $jsonArray
+     */
 foreach ($relevantStations as $id) {
     if (!empty(retrieveJSONsPerStation($id, 7))) {
         $tempArray = retrieveJSONsPerStation($id, 7);
@@ -105,9 +118,19 @@ foreach ($relevantStations as $id) {
     }
 }
 
+    /**
+     * All peak value data in the $jsonArray is then sorted again based on temperature and the
+     * first 5 indices are selected and added to the $top5 array.
+     */
 $temperatures = array_column($jsonArray, 'Temperature');
 array_multisort($jsonArray, SORT_DESC, $temperatures);
 $top5 = array_slice($jsonArray, 0, 5);
+
+
+    /**
+     * Connect to database to retrieve weather station name and country based on station number.
+     * Then fill the table with the relevant data and their types.
+     */
 
 $conn = databaseConnect();
 if ($conn->connect_error) {
