@@ -171,7 +171,7 @@ function findTotalNumStations() {
     $total = [];
     $finishedArray = [];
     global $DIR;
-    $files = scandir($DIR, SCANDIR_SORT_ASCENDING);
+    $files = scandir($DIR, SCANDIR_SORT_DESCENDING);
  
     foreach($files as $file) {
         $expl = explode('-', $file);
@@ -188,13 +188,13 @@ function findTotalNumStations() {
  }
  
  function placeMarkers($stationIDArray) {
- 
+
     global $config;
      $servername = $config['mysql']['hostname'];
      $username = $config['mysql']['username'];
      $password = $config['mysql']['password'];
      $dbname = $config['mysql']['database'];
- 
+
      $conn = new mysqli($servername, $username, $password, $dbname);
  
      if ($conn->connect_error) {
@@ -246,7 +246,8 @@ function findTotalNumStations() {
      //print_r($files);
  
      foreach($wantedStationIDs as $stationID) {
-         $placeholder = 0;
+         $placeholderTime = 0;
+         $placeholderStation = 0;
          $fileholder = NULL;
          $tempJson = NULL;
          $jsonFile = NULL;
@@ -255,18 +256,22 @@ function findTotalNumStations() {
              $expl = explode('-', $file);
              if (sizeof($expl) > 1) { // Catch nullpointer
                  if(intval($stationID) == intval($expl[0])) {
-                     if($expl[1] > $placeholder) {
+                     if($expl[1] > $placeholderTime) {
                          //echo $placeholder . " vervangen met: " . $expl[1] . "<br>";
                          //echo $fileholder . " vervangen met: " . $file . "<br>";
-                         $placeholder = $expl[1];
+                         $placeholderTime = $expl[1];
+                         $placeholderStation = $expl[0];
                          $fileholder = $file;
                      }
                  }
              }
          }
-        $tempJson = file_get_contents($DIR . $fileholder);
-        $jsonFile = json_decode($tempJson, true);
-        array_push($temp_array, $jsonFile);
+         $tempJson = file_get_contents($DIR . $fileholder);
+         $jsonFile = json_decode($tempJson, true);
+         array_push($temp_array, $jsonFile);
+         //$temp_array[$placeholderStation] = $placeholderTime
+
+
      }
      return $temp_array;
  }
@@ -278,7 +283,7 @@ function findTotalNumStations() {
      global $DIR; // Defined in config
      $temp_array = [];
  
-     $files = scandir($DIR, SCANDIR_SORT_ASCENDING);
+     $files = scandir($DIR, SCANDIR_SORT_DESCENDING);
  
      // Stap door elke file in de dir
      foreach($files as $file) {
@@ -314,4 +319,60 @@ function findTotalNumStations() {
      }
      return $tempReturn;
  }
+
+function extrapolate($stationID, $days, $dataType){
+    $counter = 0;
+    $JSONS = retrieveData($stationID, $days, $dataType);
+    $temp = $JSONS[0];
+    $last = 0;
+    $diff = 0;
+
+    foreach ($JSONS as $value) {
+        $last = $value;
+        if ($counter == 0){
+            $counter++;
+        }
+        if ($value == 'true') return 'Yes';
+        if ($value == 'false') return 'No';
+
+        else if ($counter == 30){
+            $diff = $diff / $counter;
+            $diff += $last;
+            return $diff;
+
+        }
+        else if (is_numeric($temp)) {
+            $diff += $value - $temp;
+            $temp = $value;
+            $counter++;
+        }
+
+    }
+    $diff = $diff / $counter;
+    $diff += $last;
+    return $diff;
+}
+
+function extrapolateTrueFalse($stationID, $days, $dataType){
+    $counterTrue = 0;
+    $counterFalse = 0;
+    $JSONS = retrieveData($stationID, $days, $dataType);
+    foreach ($JSONS as $value){
+        if ($value == 'true'){
+            $counterTrue++;
+        }
+        else if ($value == 'MISSING'){
+        }
+        else {
+            $counterFalse++;
+        }
+    }
+    if ($counterTrue > $counterFalse) {
+        return 'true';
+    } else {
+        return 'false';
+    }
+
+}
+
 ?>
