@@ -23,26 +23,6 @@
 
 <body>
     <?php
-    function createMarkers(){ //FUNCTION TO READ AND CREATE THE MARKERS
-    $dir = 'data';
-    $files = scandir($dir, SCANDIR_SORT_ASCENDING);
-
-        // steps through every file in the dir
-        foreach($files as $file) {
-            echo $file;
-            $expl = explode('-', $file);
-            if (sizeof($expl) > 1) {
-                // bepaal welke data uit de afgelopen x dagen komt.
-                $time = round(intval($expl[1]) / 1000);
-                echo "poep";
-                //if ($time > $days * 86400) {
-                  //  $jsonFile = file_get_contents("data/" . $file);
-
-            }
-        }
-    }
-?>
-    <?php
     // if the user is logged in, send him to the dashboard!
     require "$ROOTPATH/pages/navigation.php";
     
@@ -66,7 +46,9 @@
     </header>
     <?php
     } elseif ($Loggedin == true) {
-        // Show map for logged in users   
+        /*
+         * Only show the map for logged in users.
+         */
     ?>
     <style>
     .info {
@@ -97,6 +79,12 @@
         opacity: 0.7;
     }
     </style>
+
+        /*
+                The map displayed on the index page used to display the markers for the individual stations.
+                @author Teun de Jong
+
+        */
 
     <div id="map" style="width: 100%; height: 100%"></div>
     <link rel="stylesheet" href="./src/css/walid.css" />
@@ -135,6 +123,12 @@
     });
 
     <?php
+    /**
+     * The markers are placed on the map. The data produced by our functions is parsed to a JSON object.
+     * The JSON object is then used in the JS code to create individual markers containing the data.
+     *
+     * @author Jens Maas & Teun de Jong
+     */
             $s = placeMarkers(findTotalNumStations());
             $s_to_json = json_encode($s);
             $d = retrieveLatestJSON(findTotalNumStations());
@@ -144,7 +138,7 @@
     var markersPoints = JSON.parse('<?php echo $s_to_json?>');
     var markersData = JSON.parse('<?php echo $d_to_json?>');
 
-    // alle markers aanmaken in de for loop
+    // create all markers in the loop
     for (i = 0; i < markersPoints.length; i++) {
         for(j = 0; j < markersData.length; j++) {
             if(markersPoints[i][1] == markersData[j]['StationNumber']) {

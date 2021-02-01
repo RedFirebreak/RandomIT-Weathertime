@@ -1,14 +1,21 @@
 <?php
+
+/**
+ * Function that returns the root in a string.
+ * @return string|string[]
+ * @authors Romano Braxhoofden, Stefan Jilderda & Maurice Pater.
+ */
 function GetRootPath() {
     global $config; // open config
     $return = dirname(__FILE__);
     $return = str_replace ( "\pages" , "" , $return);
     $return = str_replace ( "/pages" , "" , $return); // linux compatibility
-    return $return; // return
+    return $return;
 }
 
 // Define rootpath
 $ROOTPATH = GetRootPath();
+
 
 // Load config file or display the instructions
 if (file_exists("$ROOTPATH/src/config.php")) {

@@ -2,7 +2,14 @@
 // Refresh $rootpath
 $ROOTPATH = GetRootPath();
 
-// Always and I mean ALWAYS use this function while dealing with user input to make sure it gets stored savely in the database.
+/**
+ * This function makes sure user input is stored safely in the database.
+ *
+ * @param $userinput
+ * @return string|void
+ * @author Stefan Jilderda
+ */
+
 function cleanUserInput($userinput) {
     $dbConnection = databaseConnect();
     if (empty($userinput)) {
@@ -15,13 +22,24 @@ function cleanUserInput($userinput) {
     return $userinput;
 }
 
+/**
+ * Decodes user input
+ * @param $userinput
+ * @return string
+ * @author Stefan Jilderda
+ */
 
-// Decode *potentially HARMFULL* data from the database
 function decodeUserInput($userinput) {
     $userinput = htmlspecialchars_decode($userinput);
     return $userinput;
 }
 
+/**
+ * Used to connect to the database.
+ *
+ * @return false|mysqli
+ * @author Stefan Jilderda
+ */
 function databaseConnect() {
     global $config;
 
@@ -63,110 +81,23 @@ function databaseConnect() {
         return $db_conn;
 }
 
+/**
+ * Used to disconnect from the database.
+ *
+ * @param $db_conn the database connection
+ * @author Stefan Jilderda
+ */
 function databaseDisconnect($db_conn) {
         mysqli_close($db_conn);
 }
 
-function datesFormatting($databasedate) {
-    // To be sure, clean the date
-    $inputdate = cleanUserInput($databasedate);
+/**
+ * Scans a directory and returns an array of unique station ids
+ *
+ * @return array
+ * @author Jens Maas
+ */
 
-    // StroToTime mafs
-    $strtotimeinput = strtotime("$inputdate"); //Future date.
-    $timeNow = strtotime("now");
-
-    $timeleft = $timeNow - $strtotimeinput; // Future will result in a negative value.
-
-    $leftdays = (int)abs(($timeleft / 24 / 60 / 60)); // Get the amount of days, then cut off numbers after the decimal by casting to int
-    $hoursleft = (int)abs((($timeleft / 60 / 60) % 24)); // timeleft in hours, minus every 24 hours
-    $minutesleft = (int)abs((($timeleft / 60)) % 60); // Time in minutes, minus every 60 minutes
-    $secondsleft = (int)abs($timeleft % 60); // Time in seconds, minus every 60 seconds
-
-    // Formatting for messages
-    if ($leftdays != 1) {
-        $textdagen = "dagen";
-    } else {
-        $textdagen = "dag";
-    }
-
-    if ($hoursleft != 1) {
-        $texturen = "uren";
-    } else {
-        $texturen = "uur";
-    }
-
-    if ($minutesleft != 1) {
-        $textminuten = "minuten";
-    } else {
-        $textminuten = "minuut";
-    }
-
-    if ($secondsleft != 1) {
-        $textseconden = "seconden";
-    } else {
-        $textseconden = "seconde";
-    }
-
-    if ($timeleft >= 0) { // A negative value means in the future
-        $future = false;
-    } else {
-        $future = true;
-    }
-
-    // Format output
-    $output = date('d-m-Y H:i:s', $strtotimeinput);
-    $outputnow = date('d-m-Y H:i:s', $timeNow);
-
-    // Message
-    if ($future) {
-        $fullmessage = "Over $leftdays $textdagen, $hoursleft $texturen, $minutesleft $textminuten, $secondsleft $textseconden ";
-        $usefullmessage = "Over $leftdays $textdagen, $hoursleft $texturen, $minutesleft $textminuten";
-        $daysmessage = "Over $leftdays $textdagen";
-    } else {
-        $fullmessage = "$leftdays $textdagen, $hoursleft $texturen, $minutesleft $textminuten, $secondsleft $textseconden geleden";
-        $usefullmessage = "$leftdays $textdagen, $hoursleft $texturen, $minutesleft $textminuten geleden";
-        $daysmessage = "$leftdays $textdagen geleden";
-    }
-
-    // Make the array
-    $returnarray = array(
-        'input' => $inputdate,
-        'output' => $output,
-        'strtotimeinput' => $strtotimeinput,
-        'strtotimenow' => $timeNow,
-        'strtotimeleft' => $timeleft,
-        'now' => $outputnow,
-        'future' => $future,
-        'daysfromnow' => $leftdays,
-        'hoursfromnow' => $hoursleft,
-        'minutesfromnow' => $minutesleft,
-        'secondsfromdagen' => $secondsleft,
-        'textdagen' => $textdagen,
-        'texturen' => $texturen,
-        'textminuten' => $textminuten,
-        'textseconden' => $textseconden,
-        'fullmessage' => $fullmessage,
-        'usefullmessage' => $usefullmessage,
-        'daysmessage' => $daysmessage,
-    );
-    return $returnarray;
-}
-
-
-function randomNumber($length) {
-    $result = '';
-    for ($i = 0; $i < $length; $i++) {
-        $result .= mt_rand(0, 9);
-    }
-    return $result;
-}
-
-function toString($array) {
-    $string = implode(" ", $array);
-    return "$string";
-}
-
-// Start Jens & Teun functions here
 function findTotalNumStations() {
     $total = [];
     $finishedArray = [];
@@ -186,16 +117,18 @@ function findTotalNumStations() {
     }
     return $finishedArray;
  }
- 
+
+/**
+ * This function queries the data needed to place the markers on the map
+ * and returns it in an array.
+ *
+ * @param $stationIDArray
+ * @return array
+ * @author Teun de Jong & Jens Maas
+ */
  function placeMarkers($stationIDArray) {
 
-    global $config;
-     $servername = $config['mysql']['hostname'];
-     $username = $config['mysql']['username'];
-     $password = $config['mysql']['password'];
-     $dbname = $config['mysql']['database'];
-
-     $conn = new mysqli($servername, $username, $password, $dbname);
+     $conn = databaseConnect();
  
      if ($conn->connect_error) {
          die("Database connection failed! " . $conn->connect_error);
@@ -219,15 +152,12 @@ function findTotalNumStations() {
      $locationData = [];
  
      foreach($jambek as $station) {
-         //echo $station;
          $sql2 = "SELECT stn, name, country, longitude, latitude FROM stations WHERE stn = '$station'";
          $result2 = $conn->query($sql2);
          if ($result2->num_rows > 0) {
              // output data of each row
              while($row = $result2->fetch_assoc()) {
                  array_push($locationData, [$row["name"], $row["stn"], $row["country"], $row["longitude"], $row["latitude"]]);
-                 //echo "id: " . $row["stn"] . " name: " . $row["name"] . " country: " . $row['country'] . " longitude: " . $row["longitude"] . " latitude: " . $row["latitude"] . "<br>";
- 
              }
          } else {
              echo "0 results";
@@ -237,8 +167,14 @@ function findTotalNumStations() {
      $conn->close();
      return $locationData;
  }
- 
- 
+
+/**
+ * Function used to return the latest JSON file for the respective station.
+ * @param $wantedStationIDs array containing the station ids for the wanted
+ *                          json files.
+ * @return array containing the latest json files.
+ * @author Jens Maas
+ */
  function retrieveLatestJSON($wantedStationIDs) {
      global $DIR;
      $temp_array = [];
@@ -275,10 +211,17 @@ function findTotalNumStations() {
      }
      return $temp_array;
  }
- 
- // Deze functie roep je aan om ALLE .json bestanden in de $DIR folder in te lezen.
- // $wantedStationID is het ID van het weerstation waar je de data van wil hebben.
- // Vervolgens worden al deze .json bestanden in een array geplaatst.
+
+/**
+ * Function to retrieve all .json files for the wanted station going back
+ * $days
+ *
+ * @param $wantedStationID
+ * @param $days amount of days back in time
+ * @return array an array of all .json files.
+ * @author Jens Maas
+ */
+
  function retrieveJSONsPerStation($wantedStationID, $days) {
      global $DIR; // Defined in config
      $temp_array = [];
@@ -307,10 +250,16 @@ function findTotalNumStations() {
      }
      return $temp_array;
  }
- 
- // Deze functie gebruikt de functie retrieveJSONsPerStation()
- // Vervolgens geef je deze een datatype mee waar je naar kan zoeken
- // Vervolgens spuugt deze functie een array uit met alle data van dat specifieke type.
+
+/**
+ * Function to retrieve all data of a specific station and type.
+ * @param $stationID
+ * @param $days amount of days back in time.
+ * @param $datatype type of data wanted. i.e. 'Temperature' or 'Windspeed'
+ * @return array containing all data of a station of that specific type.
+ * @author Jens Maas
+ */
+
  function retrieveData($stationID, $days, $datatype) {
      $tempArray = retrieveJSONsPerStation($stationID, $days);
      $tempReturn = [];
@@ -320,6 +269,16 @@ function findTotalNumStations() {
      return $tempReturn;
  }
 
+/**
+ * Function to extrapolate a missing datapoint by going back a maximum of
+ * 30 datapoints.
+ *
+ * @param $stationID
+ * @param $days amount of days back in time
+ * @param $dataType the wanted datatype
+ * @return float|int|mixed|string
+ * @author Teun de Jong & Stefan Kuppen
+ */
 function extrapolate($stationID, $days, $dataType){
     $counter = 0;
     $JSONS = retrieveData($stationID, $days, $dataType);
@@ -352,5 +311,4 @@ function extrapolate($stationID, $days, $dataType){
     $diff += $last;
     return $diff;
 }
-
 ?>
