@@ -6,6 +6,23 @@
     <?php require "./pages/header.php" ?>
 
     <title>RandomIT - Lookup</title>
+    <style>
+        table, th {
+            text-align: center;
+            padding-right: 10px;
+            padding-left: 10px;
+            border: 1px solid black;
+        }
+        td, tr {
+            text-align: left;
+            padding-right: 10px;
+            padding-left: 1%;
+            border: 1px solid black;
+        }
+        h3 {
+            color: black;
+        }
+    </style>
 </head>
 
 <body>
@@ -15,78 +32,88 @@
     require "$ROOTPATH/pages/navigation.php";
 
     if (isset($_GET['id'])) {
-        echo " ID = " . $_GET['id'];
+        $id = $_GET['id'];
+
+        $conn = databaseConnect();
+
+        if ($conn->connect_error) {
+            die("Database connection failed! " . $conn->connect_error);
+        }
+        $sql = "SELECT name, country FROM stations WHERE stn = '$id'";
+        $result = $conn->query($sql);
+
+        $tempResult = [];
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                array_push($tempResult, $row["name"], $row["country"]);
+            }
+        }
     } else {
         echo "NO ID SET";
     }
     ?>
-    
+
     <?php
 
-    require "$ROOTPATH/src/functions.php";
+    $tableHeaders = ["Storm", "Temperature", "Air Pressure", "Snow", "Windspeed", "Cloud Coverage", "Dew Point", "Rain",
+        "Precipitation", "Snow Drop", "SeaLevelPressure", "Visibility", "Tornado", "WindDirection", "Freeze", "Hail"];
 
-    //Data opvragen via functie, GET voor het stations-ID, dag 1, DataType.
-    //Integer data
-    $retrievedDataTemperature = json_encode(retrieveData($_GET['id'], 1, 'Temperature'));
-    $retrievedDataDewPoint = json_encode(retrieveData($_GET['id'], 1, 'DewPoint'));
-    $retrievedDataPercipitation = json_encode(retrieveData($_GET['id'], 1, 'Percipitation'));
-    $retrievedDataSnowDrop = json_encode(retrieveData($_GET['id'], 1, 'SnowDrop'));
-    $retrievedDataWindspeed = json_encode(retrieveData($_GET['id'], 1, 'Windspeed'));
-    $retrievedDataWindDirection = json_encode(retrieveData($_GET['id'], 1, 'WindDirection'));
-    $retrievedDataCloudCoverage = json_encode(retrieveData($_GET['id'], 1, 'CloudCoverage'));
-    $retrievedDataVisibility = json_encode(retrieveData($_GET['id'], 1, 'Visibility'));
-    $retrievedDataStationPressure = json_encode(retrieveData($_GET['id'], 1, 'StationLevelPressure'));
-    $retrievedDataSeaPressure = json_encode(retrieveData($_GET['id'], 1, 'SeaLevelPressure'));
+    $dataTypes = ["", "°C", "mbar", "", "km/h", "%", "", "°C", "", "", "", "cm", "cm", "", "mbar", "km", "", "°", "", "", ""];
 
-    //Boolean data
-    $retrievedDataStorm = json_encode(retrieveData($_GET['id'], 1, 'Storm'));
-    $retrievedDataSnow = json_encode(retrieveData($_GET['id'], 1, 'Snow'));
-    $retrievedDataRain = json_encode(retrieveData($_GET['id'], 1, 'Rain'));
-    $retrievedDataTornado = json_encode(retrieveData($_GET['id'], 1, 'Tornado'));
-    $retrievedDataFreeze = json_encode(retrieveData($_GET['id'], 1, 'Freeze'));
-    $retrievedDataHail = json_encode(retrieveData($_GET['id'], 1, 'Hail'));
+    $JSONfiles = retrieveJsonsPerStation($_GET['id'], 7 );
 
-    ?>
 
-    <div id="test">
-    <script type="text/javascript"> 
-        function toFloat(arrayDataString){
-            for (i=0; i<arrayDataString.length; i++) {
-                arrayDataString[i] = parseFloat(arrayDataString[i]);
+    echo '<div class="container h-100" style="min-width: 86%">
+            <div class="row h-100 align-items-center">
+                <div class="col-12 whiteborder text-center">';
+                echo "<h3 style='color:#ff00aa'>" . $id . " " . $tempResult[0] . ", " . $tempResult[1] . "</h3>";
+                    echo "<div class='table-responsive'>";
+
+    echo "<table class='table'>
+    <thead>
+    <th scope='col'> Date </th>";
+
+    for ($i=0; $i < sizeof($tableHeaders); $i++) {
+        echo "<th scope='col'>" . $tableHeaders[$i] . "</th>";
+    }
+    echo "</thead>
+    <tbody>";
+
+    foreach($JSONfiles as $file) {
+        echo "<tr>
+        <td style='text-align: center'>{$file['Date']}<br>{$file['Time']}</td>";
+
+        $i = 0;
+        foreach($file as $line) {
+            //echo key($file);
+            if(!($line == $file['Time'] or $line == $file['Client'] or $line == $file['StationNumber']
+                or $line == $file['Timestamp'] or $line == $file['Date'])) {
+
+                if ($line == 'false') $line = 'No';
+                if ($line == 'true') $line = 'Yes';
+                if ($line == "MISSING") {
+                    $line = extrapolate($file['StationNumber'], 7, key($file));
+                    echo "<td>" . $line . "{$dataTypes[$i]} </td>";
+                } else {
+                    echo "<td>" . $line . "{$dataTypes[$i]} </td>";
+                }
             }
-            return arrayDataString;
+            $i++;
+            next($file);
         }
-        
-        //Integer data
-        var passedDataArrayTemperature =  JSON.parse(toFloat('<?php echo $retrievedDataTemperature; ?>')); 
-        var passedDataArrayDewPoint =  JSON.parse(toFloat('<?php echo $retrievedDataDewPoint; ?>'));
-        var passedDataArrayPercipitation =  JSON.parse(toFloat('<?php echo $retrievedDataPercipitation; ?>'));
-        var passedDataArraySnowdrop =  JSON.parse(toFloat('<?php echo $retrievedDataSnowDrop; ?>'));
-        var passedDataArrayWindspeed =  JSON.parse(toFloat('<?php echo $retrievedDataWindspeed; ?>'));
-        var passedDataArrayWindDirection =  JSON.parse(toFloat('<?php echo $retrievedDataWindDirection; ?>'));
-        var passedDataArrayCloudCoverage =  JSON.parse(toFloat('<?php echo $retrievedDataCloudCoverage; ?>'));
-        var passedDataArrayVisibility =  JSON.parse(toFloat('<?php echo $retrievedDataVisibility; ?>')); 
-        var passedDataArrayStationPressure =  JSON.parse(toFloat('<?php echo $retrievedDataStationPressure; ?>'));
-        var passedDataArraySeaPressure =  JSON.parse(toFloat('<?php echo $retrievedDataSeaPressure; ?>')); 
+        echo "</tr>
+        </tbody>";
 
-        //Boolean data
-        var passedDataArrayStorm =  JSON.parse('<?php echo $retrievedDataStorm; ?>');
-        var passedDataArraySnow =  JSON.parse('<?php echo $retrievedDataSnow; ?>'); 
-        var passedDataArrayRain =  JSON.parse('<?php echo $retrievedDataRain; ?>'); 
-        var passedDataArrayTornado =  JSON.parse('<?php echo $retrievedDataTornado; ?>');
-        var passedDataArrayFreeze = JSON.parse('<?php echo $retrievedDataFreeze; ?>');
-        var passedDataArrayHail =  JSON.parse('<?php echo $retrievedDataHail; ?>'); 
-        
-        //Printing the passed array elements for test
-        document.write(passedDataArrayTemperature  + "<br>");
-        document.write(passedDataArrayDewPoint  + "<br>");
-        document.write(passedDataArrayWindDirection  + "<br>");
-        document.write(passedDataArrayFreeze  + "<br>");
-        document.write(passedDataArrayStorm  + "<br>");
+    }
+    echo '</table>
+                </div>
+            </div>
+            </div>
+        </div>';
 
 
-    </script>
-    </div>
+?>
 </body>
 
 <footer>

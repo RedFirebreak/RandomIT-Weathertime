@@ -131,7 +131,7 @@
         iconUrl: './src/map/Marker/marker-icon-2x.png',
         iconSize: [20, 30],
         iconAnchor: [20, 30],
-        popupAnchor: [-3, -76]
+        popupAnchor: [-10, -40]
     });
 
     <?php
@@ -146,18 +146,24 @@
 
     // alle markers aanmaken in de for loop
     for (i = 0; i < markersPoints.length; i++) {
-
-        L.marker([markersPoints[i][4], markersPoints[i][3]], {
-                icon: testIcon
-            }).addTo(map)
-            .bindPopup(`<h1> <b> ${markersPoints[i][0]}, ${markersPoints[i][2]} </b> </h1> <br> \
-                                                        <p id="popupdata"> Temperature: ${markersData[i]['Temperature']} <br> \
-                                                        Windspeed: ${markersData[i]['Windspeed']}<br> \
-                                                        Cloud Coverage: ${markersData[i]['CloudCoverage']}<br> \
-                                                        Snow: ${markersData[i]['Snow']} </p><br> \
-                                                        <h1>Station Number: ${markersData[i]['StationNumber']} </h1><br>\
-                                                        <h3> <a href = 'lookup.php?id=${markersPoints[i][1]}'> More data </a> </h3> \
+        for(j = 0; j < markersData.length; j++) {
+            if(markersPoints[i][1] == markersData[j]['StationNumber']) {
+                L.marker([markersPoints[i][4], markersPoints[i][3]], {
+                    icon: testIcon
+                }).addTo(map)
+                    .bindPopup(`<table style="text-align:left"> <tr> <th> <h5>${markersPoints[i][0]}, ${markersPoints[i][2]} </h5> </th> </tr> \
+                                                        <tr> <td> <h6>Station Number </td> <td> <h6>${markersData[j]['StationNumber']} </h6></td> </tr> \
+                                                        <tr> <td> <h6>Temperature </td> <td> <h6>${markersData[j]['Temperature']} °C</h6> </td> </tr> \
+                                                        <tr> <td> <h6>Windspeed </td> <td> <h6>${markersData[j]['Windspeed']} km/h</h6> </td> </tr> \
+                                                        <tr> <td> <h6>Wind Direction </td> <td> <h6>${markersData[j]['WindDirection']} °</h6> </td> </tr> \
+                                                        <tr> <td> <h6>Cloud Coverage </td> <td> <h6>${markersData[j]['CloudCoverage']} % </h6> </td> </tr> \
+                                                        <tr> <td> <h6>Precipitation </td> <td> <h6>${markersData[j]['Percipitation']} cm </h6> </td> </tr> \
+                                                        <tr> <td> <h6> <a href = 'lookup.php?id=${markersPoints[i][1]}'> More data </a> </h6> </td> \
+                                                        </table> \
                                                         `);
+
+            }
+        }
 
     }
     </script>
