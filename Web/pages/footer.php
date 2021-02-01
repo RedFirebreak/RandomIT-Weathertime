@@ -3,6 +3,6 @@
 
 <?php
     if ($config['mysql']['hostname'] = "") {
-        databaseDisconnect($dbConnection); //Disconnect from database
+        databaseDisconnect($dbConnection); // disconnect from database
     }
 ?>

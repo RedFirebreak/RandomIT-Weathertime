@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
 
     <?php require "./pages/header.php" ?>
 
-    <title>RandomIT - Password change</title>
+    <title>RandomIT - Homepage</title>
     <style type="text/css">
     .leaflet-container {
         background-color: #c5e8ff;
@@ -20,6 +20,8 @@
         height: 100%;
     }
     </style>
+
+    <title>Randomit - Password change</title>
     <link rel="stylesheet" type="text/css" href="<?php GetRootPath(); ?>/src/css/login.css">
 
 </head>
@@ -28,7 +30,7 @@
     <?php
     require "$ROOTPATH/pages/navigation.php";
 
-    //Parse the password change if POST is set
+    // Parse the password change if POST is set
     if (isset($_POST['newPass'])) {
         $query = "";
         $fails = 0;
@@ -36,7 +38,7 @@
         if (isset($_POST['newPass'])) {
             $newPass = cleanUserInput($_POST['newPass']);
         } else {
-            $usermessagecolor   = "danger"; //Success or danger
+            $usermessagecolor   = "danger"; // success or danger
             $usermessage        = "Your forgot to enter the new password!";
             $fails++;
         }
@@ -44,7 +46,7 @@
         if (isset($_POST['newPassCheck']) && $fails == 0) {
             $newPassCheck = cleanUserInput($_POST['newPassCheck']);
         } else {
-            $usermessagecolor   = "danger"; //Success or danger
+            $usermessagecolor   = "danger"; // success or danger
             $usermessage        = "Your forgot to enter the second new password!";
             $fails++;
         }
@@ -55,7 +57,7 @@
             $result_set1 = mysqli_query($dbConnection, $query1);
             $oldPassWas = mysqli_fetch_assoc($result_set1)['password'];
             if ($oldPass != $oldPassWas) {
-                $usermessagecolor   = "danger"; //Success or danger
+                $usermessagecolor   = "danger"; // success or danger
                 $usermessage        = "Old password was not correct.";
                 $oldPassWas = "";
                 $fails++;
@@ -64,27 +66,27 @@
 
         if (isset($oldPass) && isset($newPass) && isset($newPassCheck) && $fails == 0) {
             if ($newPass == $oldPass) {
-                $usermessagecolor   = "danger"; //Success or danger
+                $usermessagecolor   = "danger"; // success or danger
                 $usermessage        = "New password cannot be the same as the old password.";
             } else if ($newPass != $newPassCheck) {
-                $usermessagecolor   = "danger"; //Success or danger
+                $usermessagecolor   = "danger"; // success or danger
                 $usermessage        = "Passwords do not match, please try again.";
             } else if ($newPass == $newPassCheck) {
                 $query = "UPDATE `user` SET `password`= '$newPass' WHERE `id`='$LoggedinID'";
                 $result_set = mysqli_query($dbConnection, $query);
                 $query = "";
-                $usermessagecolor   = "success"; //Success or danger
+                $usermessagecolor   = "success"; // success or danger
                 $usermessage        = "Your password has been sucesfully updated!";
             }
         }
     }
 
-    //Redirect the user if they have not been logged in
-    if (!$Loggedin) {
+    // Redirect the user if they have not been logged in
+    if ($Loggedin == false) {
         header("location: index.php");
-    } else if ($Loggedin) {
+    } else if ($Loggedin == true) {
 
-    //Show the form / message
+    // Show the form / message
 ?>
     <div class="container-fluid">
         <div class="row no-gutter">
@@ -98,13 +100,13 @@
                             <div class="col-md-9 col-lg-8 mx-auto loginframe">
                                 <h2 class="login-heading mb-4 text-center text-blue">Change your password here</h2>
 
-                                <?php //Now load the login functionality
-                                    if (isset($usermessage)) {
-                                        echo "<div class='alert alert-$usermessagecolor' role='alert'>";
-                                        echo "$usermessage";
-                                        echo "</div>";
-                                    }
-                                ?>
+                                <?php // Now load the login functionality
+                                if (isset($usermessage)) {
+                                    echo "<div class='alert alert-$usermessagecolor' role='alert'>";
+                                    echo "$usermessage";
+                                    echo "</div>";
+                                }
+                            ?>
 
                                 <form id="loginform" action="" method="POST">
 
@@ -130,7 +132,8 @@
                                         class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2"
                                         id="loginsubmitbutton" type="submit">Confirm password change
                                     </button>
-                                </div>
+
+                            </div>
                             </form>
                         </div>
                     </div>
@@ -138,7 +141,8 @@
             </div>
         </div>
     </div>
-<?php
+    </div>
+    <?php
     }
 ?>
 

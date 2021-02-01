@@ -128,7 +128,7 @@ class DataStorage implements Runnable {
 
 
             // Then, Save (all) data if the queue is not too big (16000, 2 second worth of data not being worked on)
-            try {
+             try {
                if (stationID != "INVALID") {   
                   if (Run.filteredinput.size() < 160000) { 
                      // file (and directory) is made in the init of this class

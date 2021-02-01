@@ -1,45 +1,59 @@
 <?php
 function GetRootPath() {
-    global $config; //Open config
+    global $config; // open config
     $return = dirname(__FILE__);
     $return = str_replace ( "\pages" , "" , $return);
-    $return = str_replace ( "/pages" , "" , $return); //Linux compatibility
-    return $return;
+    $return = str_replace ( "/pages" , "" , $return); // linux compatibility
+    return $return; // return
 }
 
-//Define rootpath
+// Define rootpath
 $ROOTPATH = GetRootPath();
 
-//Redirect the user if they have not been logged in
-if (!$Loggedin) {
-    header("location: index.php");
-} else if ($Loggedin) {
+// Load config file or display the instructions
+if (file_exists("$ROOTPATH/src/config.php")) {
+    require "$ROOTPATH/src/config.php";
+} else {
+    echo "<h1>The config file is not present or is not readable!</h1> Please make sure to recreate your own config file in the /src/ folder.
+    <br><br>Please copy <b>/src/config.php.example</b> to <b>/src/config.php</b> and fill out the required info inside of the config file.<br>Still can't figure it out? Send RedFirebreak a message.";
+    exit;
+}
 
-    //Load config file or display the instructions
-    if (file_exists("$ROOTPATH/src/config.php")) {
-        require "$ROOTPATH/src/config.php";
-    } else {
-        echo "<h1>The config file is not present or is not readable!</h1> Please make sure to recreate your own config file in the /src/ folder.
-        <br><br>Please copy <b>/src/config.php.example</b> to <b>/src/config.php</b> and fill out the required info inside of the config file.<br>Still can't figure it out? Send RedFirebreak a message.";
-        exit;
-    }
+// Define SITE
+$SITE = $config['sitepath'];
 
-    //Define SITE
-    $SITE = $config['sitepath'];
+// Load all functions
+require "$ROOTPATH/src/functions.php";
 
-    //Load all functions
-    require "$ROOTPATH/src/functions.php";
+// Define DIR for json files
+$DIR = "./UniversityTeheran/";
 
-    //Define DIR for json files
-    $DIR = "./UniversityTeheran/";
+$DIR = $config['jsondir'];
 
-    $DIR = $config['jsondir'];
+// Connect to the database
+$dbConnection = databaseConnect();
 
 $days = cleanUserInput($_GET['days']);
 $ID = cleanUserInput($_GET['id']);
 
-    $days = 1;
-    $ID = cleanUserInput($_GET['id']);
+$date = retrieveData($ID, $days, 'Date');
+$time = retrieveData($ID, $days, 'Time');
+$temperature = retrieveData($ID, $days, 'Temperature');
+$dewPoint = retrieveData($ID, $days, 'DewPoint');
+$stationLevelPressure = retrieveData($ID, $days, 'StationLevelPressure');
+$seaLevelPressure = retrieveData($ID, $days, 'SeaLevelPressure');
+$visibility = retrieveData($ID, $days, 'Visibility');
+$windSpeed = retrieveData($ID, $days, 'Windspeed');
+$percipitation = retrieveData($ID, $days, 'Percipitation');
+$snowDrop = retrieveData($ID, $days, 'SnowDrop');
+$freeze = retrieveData($ID, $days, 'Freeze');
+$rain = retrieveData($ID, $days, 'Rain');
+$snow = retrieveData($ID, $days, 'Snow');
+$hail = retrieveData($ID, $days, 'Hail');
+$storm = retrieveData($ID, $days, 'Storm');
+$tornado = retrieveData($ID, $days, 'Tornado');
+$cloudCoverage = retrieveData($ID, $days, 'CloudCoverage');
+$windDirection = retrieveData($ID, $days, 'WindDirection');
 
 // Parse data, format properly
 $xml = "<?xml version=\"1.0\"?>\n";

@@ -1,6 +1,6 @@
 <?php 
 require "./pages/header.php";
-//Parse any POST requests here
+// parse any POST requests here
 
 if (isset($_POST['login'])) {
 
@@ -9,18 +9,20 @@ if (isset($_POST['login'])) {
     $fails      = 0;
 
     if (empty($username) && $fails == 0) {
-        $loggedincolor = "danger"; //Success or danger
-        $loggedinmessage = "You need to fill in a username.";
+        $loggedincolor = "danger"; // success or danger
+        $loggedinmessage = "You need to fill in a username";
         $fails++;
-    }
+      }
     if (empty($password) && $fails == 0) {
-        $loggedincolor = "danger"; //Success or danger
-        $loggedinmessage = "You need to fill in a password.";
+        $loggedincolor = "danger"; // success or danger
+        $loggedinmessage = "You need to fill in a password";
         $fails++;
     }
 
+
+    // yes this is insecure, password encryption will be done later!
     if ($fails == 0) {
-        //Query the database with this info
+        // Query the database with this info
         $query = "SELECT `id`, `username` FROM user WHERE `username`='$username' && `password`='$password'";
         $results = mysqli_query($dbConnection, $query);
 
@@ -28,31 +30,36 @@ if (isset($_POST['login'])) {
             $row = mysqli_fetch_assoc($results);
             $validlogin = True;
 
-            //Set the info into the session
+            // Set the info into the session
             $_SESSION['loggedin'] = true;
             $_SESSION['id'] = $row['id'];
             $_SESSION['name'] = $row['username'];
 
-            //Set the global variables
+            // Set the global variables
             $Loggedin = $_SESSION['loggedin'];
             $LoggedinID = $_SESSION['id'];
             $LoggedinUsername = $_SESSION['name'];
 
-            $loggedincolor = "success"; //Success or danger
+            $loggedincolor = "success"; // success or danger
             $loggedinmessage = "You are now logged in and will be redirected!"; 
 
             header("Refresh:1; url=../");
 
         } else {
-            $loggedincolor = "danger"; //Success or danger
-            $loggedinmessage = "The information you entered is invalid."; 
+            $loggedincolor = "danger"; // success or danger
+            $loggedinmessage = "The information you entered is invalid"; 
         }
     }
+} else {
+
 }
 
+
 ?>
+
 <head>
-    <title>RandomIT - Login page</title>
+
+    <title>Randomit - Login page</title>
     <link rel="stylesheet" type="text/css" href="<?php GetRootPath(); ?>/src/css/login.css">
 
     <style>
@@ -74,7 +81,7 @@ if (isset($_POST['login'])) {
                         <div class="col-md-9 col-lg-8 mx-auto loginframe">
                             <h2 class="login-heading mb-4 text-center text-blue">Welcome back!</h2>
 
-                            <?php //Now load the login functionality
+                            <?php // Now load the login functionality
                                 if (isset($loggedinmessage)) {
                                     echo "<div class='alert alert-$loggedincolor' role='alert'>";
                                     echo "$loggedinmessage";
@@ -94,15 +101,31 @@ if (isset($_POST['login'])) {
                                     <label for="inputPassword">Password</label>
                                 </div>
 
+                                <!--
+                                <div class="custom-control custom-checkbox mb-3">
+                                    <input name="rememberme" type="checkbox" class="custom-control-input"
+                                        id="customCheck1">
+                                    <label class="custom-control-label" for="customCheck1">Remember me!</label>
+                                </div>
+                                -->
+
                                 <button
                                     class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2"
                                     id="loginsubmitbutton" type="submit">Log in
                                 </button>
-                            </div>
+
+                                <!--
+                                <div class="text-center">
+                                    <a class="small" href="resetpassword.php">Forgot password?</a>
+                                    <br><br>
+                                </div>
+                                -->
+                        </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
