@@ -71,7 +71,7 @@
             <div class="row h-100 align-items-center">
                 <div class="col-12 whiteborder text-center">';
                 echo "<h3 style='color:#ff00aa'>" . $id . " " . $tempResult[0] . ", " . $tempResult[1] . "</h3>";
-                echo "<a href='xml.php?id=". $id ."' class='btn btn-danger' target='_blank'>Download XML</a>";
+                echo "<a href='xml.php?id=". $id ."&days=7' class='btn btn-danger' target='_blank'>Download XML</a>";
                     echo "<div class='table-responsive'>";
 
     echo "<table class='table'>

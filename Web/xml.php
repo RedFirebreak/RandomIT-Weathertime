@@ -33,7 +33,7 @@ $DIR = $config['jsondir'];
 // Connect to the database
 $dbConnection = databaseConnect();
 
-$days = 1;
+$days = cleanUserInput($_GET['days']);
 $ID = cleanUserInput($_GET['id']);
 
 $date = retrieveData($ID, $days, 'Date');
@@ -55,6 +55,7 @@ $tornado = retrieveData($ID, $days, 'Tornado');
 $cloudCoverage = retrieveData($ID, $days, 'CloudCoverage');
 $windDirection = retrieveData($ID, $days, 'WindDirection');
 
+// Parse data, format properly
 $xml = "<?xml version=\"1.0\"?>\n";
 $xml .= "<WEATHERDATA>\n";
     for ($i = count($time) - 1; $i > -1; $i--) {
@@ -82,11 +83,13 @@ $xml .= "<WEATHERDATA>\n";
     }
     $xml .= "</WEATHERDATA>\n";
 
-$doc = new DOMDocument();
-$doc->loadXML($xml);
-$doc->saveXml();
-
-//Download XML
+//Download XML (DOM)
 header('Content-type: text/xml');
 header('Content-Disposition: attachment; filename=' . $ID .'.xml');
+
+$doc = new DOMDocument("1.0", "utf-8"); // new DOM to save xml
+$yes = $doc->loadXML($xml, LIBXML_PARSEHUGE);
+
+echo $xml; // Echoing makes the xml actually "send"
+
 ?>
